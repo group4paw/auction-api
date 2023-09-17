@@ -1,9 +1,9 @@
 ## Auction API
 
-#### Get all items
+#### Create auction
 
 ```http
-  GET /auction/add
+  POST /auction/add
 ```
 
 | Parameter       | Type     | Description                                              |
@@ -14,10 +14,10 @@
 | `endDate`       | `string` | **Required**. The auction ending DateTime, stringified   |
 | `idPainting`    | `string` | **Required**. The object id of the painting.             |
 
-#### Get item
+#### Get auctions
 
 ```http
-  GET /auction
+  GET /auction?status={status}
 ```
 
 | Parameter | Type     | Description                                                          |
