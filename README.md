@@ -17,11 +17,12 @@
 #### Get item
 
 ```http
-  GET /auction
+  GET /auction/{id}
 ```
 
 | Parameter | Type     | Description                                                          |
 | :-------- | :------- | :------------------------------------------------------------------- |
+| `id`      | `string` | The auction id. Inserting id will ignore all other filters           |
 | `status`  | `string` | Filter auction status. Values are `scheduled`, `ongoing`, and `over` |
 
 ## Things changed

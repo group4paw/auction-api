@@ -5,6 +5,6 @@ const { addAuctionController, getAuctionsController } = require("../controllers/
 
 // Register User
 router.post("/add", addAuctionController);
-router.get("/", getAuctionsController);
+router.get("/:auctionID?", getAuctionsController);
 
 module.exports = router;

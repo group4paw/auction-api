@@ -1,4 +1,5 @@
 const { validationResult } = require("express-validator");
+const ObjectId = require('mongodb').ObjectId;
 const Auction = require("../models/Auction.js");
 
 exports.addAuctionController = async (req, res) => {
@@ -49,6 +50,11 @@ exports.addAuctionController = async (req, res) => {
 
 exports.getAuctionsController = async (req, res) => {
 	// get filters
+	const id = req.params.auctionId;
+	if (id) {
+		const auction = await Auction.find({ _id: ObjectId(id)});
+		return res.status(200).json(auction);
+	}
 	const { status } = req.query;
 	const filter = {};
 	if (status) {
@@ -68,6 +74,16 @@ exports.getAuctionsController = async (req, res) => {
 		}
 	}
 
-	const auctions = await Auction.find(filter);
+	const auctionsDocument = await Auction.find(filter);
+	const auctions = auctionsDocument.map((auction) => auction.toJSON());
+
+	// additional data
+	// status
+	auctions.forEach(auction => {
+		if (auction.startDate > new Date()) auction.status = "scheduled";
+		if (auction.startDate <= new Date()) auction.status = "ongoing";
+		if (auction.endDate <= new Date()) auction.status = "over";
+	});
+	
 	return res.status(200).json(auctions);
 };
