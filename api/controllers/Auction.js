@@ -3,6 +3,7 @@ const ObjectId = require('mongodb').ObjectId;
 const Auction = require("../models/Auction.js");
 
 exports.addAuctionController = async (req, res) => {
+	// authorization if needed
 	const { startingPrice, reservePrice, startDate, endDate, idPainting } = req.body;
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array().map((error) => error.msg)[0] });
@@ -50,10 +51,15 @@ exports.addAuctionController = async (req, res) => {
 
 exports.getAuctionsController = async (req, res) => {
 	// get filters
-	const id = req.params.auctionId;
+	const id = req.params.auctionID;
 	if (id) {
-		const auction = await Auction.find({ _id: ObjectId(id)});
-		return res.status(200).json(auction);
+		if (id.length != 24) res.status(404).json({ message: "Auction not found" });
+		try {
+			const auction = await Auction.findById(id);
+			if (!auction) return res.status(404).json({ message: "Auction not found" });
+			return res.status(200).json(auction);
+		}
+		catch { return res.status(404).json({ message: "Auction not found" }); }
 	}
 	const { status } = req.query;
 	const filter = {};
@@ -84,6 +90,14 @@ exports.getAuctionsController = async (req, res) => {
 		if (auction.startDate <= new Date()) auction.status = "ongoing";
 		if (auction.endDate <= new Date()) auction.status = "over";
 	});
-	
+
 	return res.status(200).json(auctions);
 };
+
+exports.removeAuctionsController = async (req, res) => {
+	// authorization if needed
+	const id = req.params.auctionId;
+	const auction = await Auction.find({ _id: ObjectId(id)});
+	if (auction.length == 0) res.status(404).json({ message: "Auction not found" });
+	res.status(200).json([]);
+}
