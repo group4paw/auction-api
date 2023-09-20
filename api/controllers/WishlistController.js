@@ -1,6 +1,7 @@
 const Wishlist = require('../models/Wishlist');
 const User = require('../models/User');
 const Painting = require('../models/Painting');
+const WishlistItem = require('../models/WishlistItem');
 
 // Create a new wishlist
 async function createWishlist(req, res) {
@@ -18,7 +19,7 @@ async function createWishlist(req, res) {
       return res.status(409).json({ error: 'Wishlist already exists' });
     }
 
-    const wishlist = await Wishlist.create({ idWishlist, idUser, paintings: [] });
+    const wishlist = await Wishlist.create({ idWishlist, idUser });
     res.status(201).json(wishlist);
   } catch (error) {
     res.status(500).json({ error: 'Error creating the wishlist' });
@@ -40,7 +41,8 @@ async function addToWishlist(req, res) {
       return res.status(404).json({ error: 'Wishlist not found' });
     }
 
-    res.status(200).json(wishlist);
+    const wishlistItem = await WishlistItem.create({ idWishlist: wishlist._id, idPainting });
+    res.status(200).json(wishlistItem);
   } catch (error) {
     res.status(500).json({ error: 'Error adding to wishlist' });
   }
@@ -61,7 +63,8 @@ async function removeFromWishlist(req, res) {
       return res.status(404).json({ error: 'Wishlist not found' });
     }
 
-    res.status(200).json(wishlist);
+    await WishlistItem.findOneAndRemove({ idWishlist: wishlist._id, idPainting });
+    res.status(204).json();
   } catch (error) {
     res.status(500).json({ error: 'Error removing from wishlist' });
   }
