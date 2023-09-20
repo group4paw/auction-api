@@ -21,7 +21,7 @@ app.listen(3000, () => {
 
 // Route
 const UserRouter = require("./api/routes/User.js");
-const wishlistRoutes = require('./api/routes/wishlistRoutes.js');
+const wishlistRoutes = require('./api/routes/WishlistRoutes.js');
 
-app.use('/api', wishlistRoutes);
+app.use('/api', WishlistRoutes);
 app.use("/user", UserRouter);
