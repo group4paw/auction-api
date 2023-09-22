@@ -8,10 +8,16 @@ dotenv.config({ path: "./.env" });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("API Auction!");
 });
+
+app.post("/customers", (req, res)=>{
+  console.log(req.body);
+  res.send(req.body);
+})
 
 connectDB();
 
@@ -21,5 +27,7 @@ app.listen(3000, () => {
 
 // Route
 const UserRouter = require("./api/routes/User.js");
+const CustomerRouter = require("./api/routes/customerRoutes.js");
 
 app.use("/user", UserRouter);
+app.use("/customer", CustomerRouter);

@@ -1,36 +1,31 @@
 const mongoose = require("mongoose");
 
 const customerSchema = new mongoose.Schema({
-  idCustomer: {
-    type: Number,
-    required: true,
-    default: 0
+    idCustomer: {
+      type: String,
+      required: true,
+    },
+    custName: {
+      type: String,
+      required: true,
+    },
+    custEmail: {
+      type: String,
+      required: true,
+    },
+    custPassword: {
+      type: String,
+      required: true,
+    },
+    custPhoneNumber: {
+      type: String,
+      required: true,
+    },
+    custBalance: {
+      type: String,
+      required: false,
+    },
   },
-  custName: {
-    type: String,
-    required: true,
-  },
-  custEmail: {
-    type: String,
-    required: true,
-  },
-  custPassword: {
-    type: String,
-    required: true,
-  },
-  custPhoneNumber: {
-    type: Number,
-    required: true,
-  },
-  custBalance: {
-    type: Number,
-    required: true,
-    default: 0
-  },
-},
-{
-    timestamps: true
-    }
 );
 
 module.exports = mongoose.model("Customer", customerSchema);
