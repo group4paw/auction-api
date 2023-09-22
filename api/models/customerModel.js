@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const customerSchema = new mongoose.Schema({
     idCustomer: {
-      type: String,
+      type: Number,
       required: true,
     },
     custName: {
@@ -18,11 +18,11 @@ const customerSchema = new mongoose.Schema({
       required: true,
     },
     custPhoneNumber: {
-      type: String,
+      type: Number,
       required: true,
     },
     custBalance: {
-      type: String,
+      type: Number,
       required: false,
     },
   },

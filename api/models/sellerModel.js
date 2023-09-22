@@ -4,7 +4,6 @@ const sellerSchema = new mongoose.Schema({
   idSeller: {
     type: Number,
     required: true,
-    default: 0
   },
   sellerName: {
     type: String,
@@ -25,7 +24,6 @@ const sellerSchema = new mongoose.Schema({
   sellerBalance: {
     type: Number,
     required: true,
-    default: 0
   },
   sellerAddres: {
     type: String,
@@ -37,4 +35,4 @@ const sellerSchema = new mongoose.Schema({
     }
 );
 
-module.exports = mongoose.model("Customer", sellerSchema);
+module.exports = mongoose.model("Seller", sellerSchema);
