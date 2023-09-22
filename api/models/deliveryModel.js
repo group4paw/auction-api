@@ -15,6 +15,46 @@ const deliverySchema = new mongoose.Schema({
     required: true,
     default: 0
   },
+  idCustomer: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    trim: true,
+    ref: "Customer",
+  },
+  idSeller: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    trim: true,
+    ref: "Seller",
+  },
+  custAddress: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    trim: true,
+    ref: "Customer",
+  },
+  custPhoneNumber: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    trim: true,
+    ref: "Customer",
+  },
+  sellerAddress: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    trim: true,
+    ref: "Seller",
+  },
+  idInsurance: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    trim: true,
+    ref: "Insurance",
+  },
+  ongkir:{
+    type: Number,
+    require: true,
+  },
 },
 {
     timestamps: true

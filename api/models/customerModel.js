@@ -25,6 +25,10 @@ const customerSchema = new mongoose.Schema({
       type: Number,
       required: false,
     },
+    custAddres: {
+      type: String,
+      required: true,
+    },
   },
 );
 

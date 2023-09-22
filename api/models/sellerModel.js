@@ -29,6 +29,10 @@ const sellerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  sellerModel: {
+    type: String,
+    required: true,
+  }
 },
 {
     timestamps: true
