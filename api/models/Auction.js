@@ -19,11 +19,11 @@ const auctionSchema = new mongoose.Schema({
 		required: true,
 	},
 	idPainting: {
-		type: Number,
+		type: mongoose.Schema.Types.ObjectId,
 		required: true,
 	},
 	bidders: {
-		type: [Number],
+		type: [mongoose.Schema.Types.ObjectId],
 		required: true,
 	},
 });
