@@ -30,4 +30,4 @@ const UserRouter = require("./api/routes/User.js");
 const CustomerRouter = require("./api/routes/customerRoutes.js");
 
 app.use("/user", UserRouter);
-app.use("/customer", CustomerRouter);
+app.use("", CustomerRouter);
