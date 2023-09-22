@@ -9,7 +9,10 @@ exports.createPayment = async (req, res) => {
     custBalance,
     sellerBalance,
     totalPurchase,
+    sellerId,
+    customerId,
   } = req.body;
+
   try {
     const payment = await Payment.create({
       idDelivery,
@@ -19,7 +22,10 @@ exports.createPayment = async (req, res) => {
       custBalance,
       sellerBalance,
       totalPurchase,
+      sellerId,
+      customerId,
     });
+
     return res.status(201).json({
       success: true,
       data: payment,
@@ -29,7 +35,7 @@ exports.createPayment = async (req, res) => {
     console.log(error);
     return res.status(500).json({
       success: false,
-      error: "Server Error",
+      error: error.message,
     });
   }
 };
@@ -64,6 +70,60 @@ exports.getPaymentById = async (req, res) => {
     return res.status(404).json({
       success: false,
       error: "Payment not found",
+    });
+  }
+};
+
+exports.updatePaymentToFailed = async (req, res) => {
+  try {
+    const payment = await Payment.findByIdAndUpdate(req.params.id, {
+      status: "failed",
+    });
+
+    if (!payment) {
+      return res.status(404).json({
+        success: false,
+        error: "Payment not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: payment,
+      message: "Payment status updated to failed successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
+exports.updatePaymentToPaid = async (req, res) => {
+  try {
+    const payment = await Payment.findByIdAndUpdate(req.params.id, {
+      status: "paid",
+    });
+
+    if (!payment) {
+      return res.status(404).json({
+        success: false,
+        error: "Payment not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: payment,
+      message: "Payment status updated to paid successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      error: error.message,
     });
   }
 };
