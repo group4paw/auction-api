@@ -57,19 +57,31 @@ exports.getPayments = async (req, res) => {
   }
 };
 
-exports.getPaymentById = async (req, res) => {
+exports.getPaymentHistory = async (req, res) => {
+  const { role } = req.body;
+  const { userId } = req.params;
+
+  const query = {};
+
+  if (role === "Customer") {
+    query.customerId = userId;
+  } else if (role === "Seller") {
+    query.sellerId = userId;
+  }
+
   try {
-    const payment = await Payment.findById(req.params.id);
+    const payments = await Payment.find(query);
+
     return res.status(200).json({
       success: true,
-      data: payment,
-      message: "Payment retrieved successfully",
+      data: payments,
+      message: "Payment history retrieved successfully",
     });
   } catch (error) {
     console.log(error);
-    return res.status(404).json({
+    return res.status(500).json({
       success: false,
-      error: "Payment not found",
+      error: error.message,
     });
   }
 };
@@ -77,7 +89,7 @@ exports.getPaymentById = async (req, res) => {
 exports.updatePaymentToFailed = async (req, res) => {
   try {
     const payment = await Payment.findByIdAndUpdate(req.params.id, {
-      status: "failed",
+      status: "Failed",
     });
 
     if (!payment) {
@@ -104,7 +116,7 @@ exports.updatePaymentToFailed = async (req, res) => {
 exports.updatePaymentToPaid = async (req, res) => {
   try {
     const payment = await Payment.findByIdAndUpdate(req.params.id, {
-      status: "paid",
+      status: "Paid",
     });
 
     if (!payment) {
@@ -118,6 +130,51 @@ exports.updatePaymentToPaid = async (req, res) => {
       success: true,
       data: payment,
       message: "Payment status updated to paid successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
+exports.getPaymentsByStatus = async (req, res) => {
+  const { status } = req.params;
+
+  try {
+    const payments = await Payment.find({ status });
+
+    return res.status(200).json({
+      success: true,
+      data: payments,
+      message: "Payments retrieved successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
+exports.getPaymentsByDate = async (req, res) => {
+  const { startDate, endDate } = req.query;
+
+  try {
+    const payments = await Payment.find({
+      paymentDate: {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: payments,
+      message: "Payments retrieved successfully",
     });
   } catch (error) {
     console.log(error);
