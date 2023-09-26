@@ -1,7 +1,7 @@
-const Wishlist = require('../models/Wishlist');
-const Customer = require('../models/Customer');
-const Painting = require('../models/Painting');
-const WishlistItem = require('../models/WishlistItem');
+const Wishlist = require('../models/wishlistModel');
+const Customer = require('../models/customerModel');
+const Painting = require('../models/paintingModel');
+const WishlistItem = require('../models/wishlistItemModel');
 
 // Create a new wishlist
 async function createWishlist(req, res) {
