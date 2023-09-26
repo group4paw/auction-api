@@ -22,14 +22,6 @@ const paymentSchema = new mongoose.Schema({
     default: Date.now,
     required: true,
   },
-  custBalance: {
-    type: Number,
-    required: true,
-  },
-  sellerBalance: {
-    type: Number,
-    required: true,
-  },
   totalPurchase: {
     type: Number,
     required: true,
