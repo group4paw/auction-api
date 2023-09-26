@@ -8,10 +8,13 @@ dotenv.config({ path: "./.env" });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("API Auction!");
 });
+
+
 
 connectDB();
 
@@ -21,7 +24,17 @@ app.listen(3000, () => {
 
 // Route
 const UserRouter = require("./api/routes/User.js");
+  
+const CustomerRouter = require("./api/routes/customerRoutes.js");
+const SellerRouter = require("./api/routes/sellerRoutes.js");
+const Delivery = require("./api/routes/deliveryRoutes.js");
+const Insurance = require("./api/routes/insuranceRoutes.js");
 const PaymentRouter = require("./api/routes/Payment.js");
 
 app.use("/user", UserRouter);
+app.use("/customer", CustomerRouter);
+app.use("/seller", SellerRouter);
 app.use("/payment", PaymentRouter);
+
+app.use("", Insurance);
+
