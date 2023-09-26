@@ -21,5 +21,7 @@ app.listen(3000, () => {
 
 // Route
 const UserRouter = require("./api/routes/User.js");
+const PaymentRouter = require("./api/routes/Payment.js");
 
 app.use("/user", UserRouter);
+app.use("/payment", PaymentRouter);
