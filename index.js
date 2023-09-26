@@ -11,20 +11,17 @@ app.use(bodyParser.json());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-	res.send("API Auction!");
+  res.send("API Auction!");
 });
-
-
 
 connectDB();
 
 app.listen(3000, () => {
-	console.log("Server is running on port 3000.");
+  console.log("Server is running on port 3000.");
 });
 
 // Route
 const AuctionRouter = require("./api/routes/Auction.js");
-const UserRouter = require("./api/routes/User.js");
 const CustomerRouter = require("./api/routes/customerRoutes.js");
 const SellerRouter = require("./api/routes/sellerRoutes.js");
 const Delivery = require("./api/routes/deliveryRoutes.js");
@@ -33,13 +30,9 @@ const PaymentRouter = require("./api/routes/Payment.js");
 const WishlistRouter = require("./api/routes/WishlistRoutes.js");
 
 app.use("/wishlist", WishlistRouter);
-app.use("/user", UserRouter);
 app.use("/customer", CustomerRouter);
 app.use("/seller", SellerRouter);
 app.use("/payment", PaymentRouter);
 app.use("", Insurance);
-
-
+app.use("/delivery", Delivery);
 app.use("/auction", AuctionRouter);
-app.use("", Insurance);
-
