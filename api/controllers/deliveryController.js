@@ -2,7 +2,6 @@ const Delivery= require("../models/deliveryModel");
 
 exports.createDelivery = async (req,res) => {
     const{
-        idDelivery,
         idCustomer,
         idSeller,
         custAddress,
@@ -13,7 +12,6 @@ exports.createDelivery = async (req,res) => {
     } = req.body
     try {
         const delivery = await Delivery.create({
-        idDelivery,
         idCustomer,
         idSeller,
         custAddress,
@@ -34,7 +32,7 @@ exports.createDelivery = async (req,res) => {
 };
 
 exports.updateOngkirById = async (req,res) => {
-    const {deliveryId} = req.params;
+    const deliveryId = req.params.id;
     const {newOngkir} = req.body;
     try {
         const delivery = await Delivery.findById(deliveryId);
@@ -45,7 +43,7 @@ exports.updateOngkirById = async (req,res) => {
       
           await delivery.save();
       
-          res.status(201).json({ message: 'Ongkir updated successfully', updatedDelivery: delivery });
+          res.status(201).json({ message: 'Ongkir updated successfully', updatedDelivery: delivery.ongkir });
         
     } catch (error) {
         console.error(error);
@@ -54,9 +52,9 @@ exports.updateOngkirById = async (req,res) => {
 };
 
 exports.getDeliveryById = async (req,res) => {
-    const {deliveryId} = req.params;
+    const deliveryId = req.params.id;
     try {
-        const delivery = await Delivery.findOne({ deliveryId });
+        const delivery = await Delivery.findById(deliveryId);
     
         if (!delivery) {
           return res.status(404).json({ message: 'Delivery not found' });

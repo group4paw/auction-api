@@ -27,12 +27,12 @@ exports.createInsurance = async (req,res) => {
 }; 
 
 exports.getInsuranceById = async (req,res) => {
-    const {insuranceId} = req.params;
+    const insuranceId = req.params.id;
     try {
-        const insurance = await Insurance.findOne({ insuranceId });
+        const insurance = await Insurance.findById(insuranceId);
     
         if (!insurance) {
-          return res.status(404).json({ message: 'Delivery not found' });
+          return res.status(404).json({ message: 'Insurance not found' });
         }
     
         res.status(200).json({ insurance });

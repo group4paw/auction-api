@@ -3,7 +3,7 @@ const { createInsurance } = require("../controllers/insuranceController");
 const { getInsuranceById } = require("../controllers/insuranceController");
 const router = express.Router();
 
-router.post("/create/insurance", createInsurance);
-router.get("/get-insurance/:insuranceId", getInsuranceById);
+router.post("/create", createInsurance);
+router.get("/:id", getInsuranceById);
 
 module.exports = router;

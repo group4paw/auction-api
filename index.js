@@ -32,6 +32,6 @@ const Insurance = require("./api/routes/insuranceRoutes.js");
 app.use("/user", UserRouter);
 app.use("/customer", CustomerRouter);
 app.use("/seller", SellerRouter);
-app.use("", Delivery);
-app.use("", Insurance);
+app.use("/delivery", Delivery);
+app.use("/insurance", Insurance);
 
