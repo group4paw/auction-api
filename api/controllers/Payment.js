@@ -1,22 +1,29 @@
 const Payment = require("../models/Payment");
+const Delivery = require("../models/deliveryModel");
+const Insurance = require("../models/insuranceModel");
 
 exports.createPayment = async (req, res) => {
   const {
     idDelivery,
     idPainting,
+    idInsurance,
     lastBidPrice,
-    totalPurchase,
     sellerId,
     customerId,
   } = req.body;
 
+  const delivery = await Delivery.findById(idDelivery);
+  const insurance = await Insurance.findById(idInsurance);
+  let totalPurchase = lastBidPrice + delivery.ongkir + insurance.insurancePrice;
   try {
     const payment = await Payment.create({
       idDelivery,
       idPainting,
       lastBidPrice,
-      totalPurchase,
+      idInsurance,
+
       sellerId,
+      totalPurchase,
       customerId,
     });
 

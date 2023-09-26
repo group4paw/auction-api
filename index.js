@@ -33,6 +33,6 @@ app.use("/wishlist", WishlistRouter);
 app.use("/customer", CustomerRouter);
 app.use("/seller", SellerRouter);
 app.use("/payment", PaymentRouter);
-app.use("", Insurance);
+app.use("/insurance", Insurance);
 app.use("/delivery", Delivery);
 app.use("/auction", AuctionRouter);
