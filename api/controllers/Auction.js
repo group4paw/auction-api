@@ -1,13 +1,15 @@
 const { validationResult } = require("express-validator");
 const ObjectId = require("mongodb").ObjectId;
 const Auction = require("../models/Auction.js");
+const Bid = require("../models/Bid.js");
 const { default: mongoose } = require("mongoose");
 
 exports.addAuctionController = async (req, res) => {
-	// authorization if needed
-	const { startingPrice, reservePrice, startDate, endDate, idPainting } = req.body;
+	const { userid, startingPrice, reservePrice, startDate, endDate, idPainting } = req.body;
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array().map((error) => error.msg)[0] });
+
+	// authorization if needed
 
 	// parse dates
 	const parsedStartDate = new Date(startDate);
@@ -15,6 +17,7 @@ exports.addAuctionController = async (req, res) => {
 
 	// type checks
 	if (
+		typeof userid !== "string" ||
 		typeof startingPrice !== "number" ||
 		typeof reservePrice !== "number" ||
 		isNaN(parsedStartDate) || // invalid dates are NaN
@@ -28,12 +31,13 @@ exports.addAuctionController = async (req, res) => {
 
 	try {
 		const auction = await Auction({
+			owner: new mongoose.Types.ObjectId(userid),
 			startingPrice: startingPrice,
 			reservePrice: reservePrice,
 			startDate: parsedStartDate,
 			endDate: parsedEndDate,
 			idPainting: new mongoose.Types.ObjectId(idPainting),
-			bidders: [],
+			bids: [],
 		});
 		await auction.save();
 		return res.status(201).json({
@@ -51,7 +55,6 @@ exports.addAuctionController = async (req, res) => {
 };
 
 exports.getAuctionsController = async (req, res) => {
-
 	// additional data helper function
 	function appendAdditionalData(doc) {
 		const auction = doc.toJSON();
@@ -110,14 +113,20 @@ exports.getAuctionsController = async (req, res) => {
 };
 
 exports.removeAuctionsController = async (req, res) => {
-	// authorization if needed
 	const id = req.params.auctionID;
+	const { userid } = req.body;
+
+	// authorization if needed
 
 	// find auction and check if its ongoing
 	if (id.length != 24) res.status(404).json({ message: "Auction not found" });
 	try {
 		const auction = await Auction.findById(id);
 		if (!auction) return res.status(404).json({ message: "Auction not found" });
+
+		// reject if not owner
+		if (!auction.owner.equals(new mongoose.Types.ObjectId(userid)))
+			return res.status(403).json({ message: "Unauthorized" });
 
 		// reject if ongoing
 		if (auction.startDate <= new Date() && auction.endDate > new Date())
@@ -134,4 +143,48 @@ exports.removeAuctionsController = async (req, res) => {
 		data: deletedAuction,
 		message: "Auction deleted successfully",
 	});
+};
+
+exports.addBidController = async (req, res) => {
+	const id = req.params.auctionID;
+	const { userid, amount } = req.body;
+
+	// find auction and check if its ongoing
+	if (id.length != 24) res.status(404).json({ message: "Auction not found" });
+	try {
+		const auction = await Auction.findById(id)
+			.exec()
+			.then(async (doc) => {
+				if (!doc) res.status(404).json({ message: "Auction not found" });
+
+				// reject if not ongoing
+				if (doc.startDate > new Date()) return res.status(403).json({ message: "Auction hasn't started." });
+				if (doc.endDate <= new Date()) return res.status(403).json({ message: "Auction has already ended." });
+
+				// reject if id is owner
+				if (doc.owner == new mongoose.Types.ObjectId(userid))
+					return res.status(403).json({ message: "Invalid bidder." });
+
+				const bid = await Bid({
+					bidder: new mongoose.Types.ObjectId(userid),
+					auction: doc._id,
+					amount: amount,
+				});
+
+				const savedBid = await bid.save();
+
+				const updatedAuction = await Auction.findByIdAndUpdate(id, { $push: { bids: savedBid._id } }, { new: true });
+
+				return res.status(200).json({
+					success: true,
+					data: updatedAuction,
+					message: "Bid successful",
+				});
+			});
+
+		return;
+	} catch (err) {
+		console.log(err);
+		return res.status(404).json({ message: "Auction not found" });
+	}
 };

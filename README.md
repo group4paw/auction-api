@@ -3,6 +3,7 @@
 An auction is the way seller and buyers interact. Sellers will start an auction for a painting they made and buyers can bid to buy the painting they wish to have. Auctions are held in a limited amount of time.
 
 ### Endpoints
+
 ```
 POST /auction/add
 GET /auction
@@ -62,7 +63,11 @@ curl -X POST http://localhost:3000/auction/add \
 ### Get auctions
 
 ```shell
-curl -X GET http://localhost:3000/auction/650aa99f546bacd802eb8bbb?status=ongoing
+curl -X GET http://localhost:3000/auction?status=ongoing
+```
+
+```shell
+curl -X GET http://localhost:3000/auction/650aa99f546bacd802eb8bbb
 ```
 
 | Parameter | Type     | Description                                                          |
@@ -70,16 +75,36 @@ curl -X GET http://localhost:3000/auction/650aa99f546bacd802eb8bbb?status=ongoin
 | `id`      | `string` | The auction id. Inserting id will ignore all other filters           |
 | `status`  | `string` | Filter auction status. Values are `scheduled`, `ongoing`, and `over` |
 
+### Bid on auction
+
+```shell
+curl -X PUT http://localhost:3000/auction/650aa99f546bacd802eb8bbb/bid \
+  -H "Content-Type: application/json" \
+  -d '{
+    "userid": "6505751888946e0d312bcdf0",
+    "amount": 1000
+  }'
+```
+
+| Parameter | Type     | Description          |
+| :-------- | :------- | :------------------- |
+| `userid`  | `string` | The id of the bidder |
+| `amount`  | `number` | Amount of bid.       |
+
 ### Delete auction
 
 ```shell
-curl -X DELETE "http://localhost:3000/auction/650aa99f546bacd802eb8bbb/delete"
+curl -X DELETE "http://localhost:3000/auction/650aa99f546bacd802eb8bbb/delete" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "userid": "6505751888946e0d312bcdf0",
+  }'
 
 ```
 
-| Parameter | Type     | Description                   |
-| :-------- | :------- | :---------------------------- |
-| `id`      | `string` | **Required**. The auction id. |
+| Parameter | Type     | Description                         |
+| :-------- | :------- | :---------------------------------- |
+| `userid`  | `string` | **Required**. User id of the owner. |
 
 ## Things changed
 

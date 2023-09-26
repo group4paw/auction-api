@@ -2,6 +2,10 @@
 const mongoose = require("mongoose");
 
 const auctionSchema = new mongoose.Schema({
+	owner: {
+		type: mongoose.Schema.Types.ObjectId,
+		required: true,
+	},
 	startingPrice: {
 		type: Number,
 		required: true,
@@ -22,7 +26,7 @@ const auctionSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		required: true,
 	},
-	bidders: {
+	bids: {
 		type: [mongoose.Schema.Types.ObjectId],
 		required: true,
 	},
