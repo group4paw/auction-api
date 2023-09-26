@@ -1,33 +1,34 @@
 const express = require("express");
+
 const {
   createPayment,
+  getPayments,
   getPaymentsByStatus,
-  getPaymentById,
-  updatePayment,
+  getPaymentsByDate,
   updatePaymentToPaid,
   updatePaymentToFailed,
-  getPaymentsByDate,
+  getPaymentHistory,
 } = require("../controllers/Payment");
+
 const router = express.Router();
 
 // Create Payment
-router.post("/payment", createPayment);
+router.post("/", createPayment);
 
 // Get All Payments
-router.get("/payment", getPayments);
+router.get("/", getPayments);
 
-// Params : UserId
-// Body : Role
-router.get("/payment/:userId", getPaymentById);
+// Params : UserId, Role
+router.get("/:userId:/:role", getPaymentHistory);
 
 // Get Payment by Params : status
-router.get("/payment/status/:status", getPaymentsByStatus);
+router.get("/status/:status", getPaymentsByStatus);
 
 // Update payment status
-router.put("/payment/paid", updatePaymentToPaid);
-router.put("/payment/failed", updatePaymentToFailed);
+router.put("/paid", updatePaymentToPaid);
+router.put("/failed", updatePaymentToFailed);
 
 // Get Payment by StartDate and EndDate
-router.get("/payments/date/:startDate/:endDate", getPaymentsByDate);
+router.get("/date/:startDate/:endDate", getPaymentsByDate);
 
 module.exports = router;

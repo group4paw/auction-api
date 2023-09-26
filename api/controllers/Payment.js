@@ -5,9 +5,6 @@ exports.createPayment = async (req, res) => {
     idDelivery,
     idPainting,
     lastBidPrice,
-    paymentDate,
-    custBalance,
-    sellerBalance,
     totalPurchase,
     sellerId,
     customerId,
@@ -18,9 +15,6 @@ exports.createPayment = async (req, res) => {
       idDelivery,
       idPainting,
       lastBidPrice,
-      paymentDate,
-      custBalance,
-      sellerBalance,
       totalPurchase,
       sellerId,
       customerId,
@@ -58,8 +52,7 @@ exports.getPayments = async (req, res) => {
 };
 
 exports.getPaymentHistory = async (req, res) => {
-  const { role } = req.body;
-  const { userId } = req.params;
+  const { userId, role } = req.params;
 
   const query = {};
 
@@ -117,6 +110,16 @@ exports.updatePaymentToPaid = async (req, res) => {
   try {
     const payment = await Payment.findByIdAndUpdate(req.params.id, {
       status: "Paid",
+    });
+
+    const { totalPurchase, sellerId, customerId } = payment;
+
+    const seller = await Seller.findByIdAndUpdate(sellerId, {
+      $inc: { balance: totalPurchase },
+    });
+
+    const customer = await Customer.findByIdAndUpdate(customerId, {
+      $inc: { balance: -totalPurchase },
     });
 
     if (!payment) {
