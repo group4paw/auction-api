@@ -8,15 +8,15 @@ const {
 } = require('../controllers/WishlistController');
 
 // Create a new wishlist
-router.post('/wishlist', createWishlist);
+router.post('/addwishlist', createWishlist);
 
 // Add a painting to the wishlist
-router.post('/wishlist/:idWishlist/add/:idPainting', addToWishlist);
+router.post('/addwishlist/:idWishlist/add/:idPainting', addToWishlist);
 
 // Remove a painting from the wishlist
-router.delete('/wishlist/:idWishlist/remove/:idPainting', removeFromWishlist);
+router.delete('/addwishlist/:idWishlist/remove/:idPainting', removeFromWishlist);
 
 // Get paintings in the wishlist
-router.get('/wishlist/:idWishlist/paintings', getWishlistPaintings);
+router.get('/addwishlist/:idWishlist/paintings', getWishlistPaintings);
 
 module.exports = router;
