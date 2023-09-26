@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("API Auction!");
+	res.send("API Auction!");
 });
 
 
@@ -19,10 +19,11 @@ app.get("/", (req, res) => {
 connectDB();
 
 app.listen(3000, () => {
-  console.log("Server is running on port 3000.");
+	console.log("Server is running on port 3000.");
 });
 
 // Route
+const AuctionRouter = require("./api/routes/Auction.js");
 const UserRouter = require("./api/routes/User.js");
 const CustomerRouter = require("./api/routes/customerRoutes.js");
 const SellerRouter = require("./api/routes/sellerRoutes.js");
@@ -32,6 +33,5 @@ const Insurance = require("./api/routes/insuranceRoutes.js");
 app.use("/user", UserRouter);
 app.use("/customer", CustomerRouter);
 app.use("/seller", SellerRouter);
-
+app.use("/auction", AuctionRouter);
 app.use("", Insurance);
-
