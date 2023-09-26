@@ -16,6 +16,7 @@ DELETE /auction/:id/delete
 ```json
 {
 	"_id": "650ab75d1efe5c8445082b2d",
+	"owner": "6505751888946e0d312bcdf0",
 	"startingPrice": 210,
 	"reservePrice": 250,
 	"startDate": "2023-09-09T17:00:00.000Z",
