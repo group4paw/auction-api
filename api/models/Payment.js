@@ -13,6 +13,12 @@ const paymentSchema = new mongoose.Schema({
     trim: true,
     ref: "Painting",
   },
+  idInsurance: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    trim: true,
+    ref: "Insurance",
+  },
   lastBidPrice: {
     type: Number,
     required: true,
