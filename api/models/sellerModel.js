@@ -1,10 +1,6 @@
 const mongoose = require("mongoose");
 
 const sellerSchema = new mongoose.Schema({
-  idSeller: {
-    type: Number,
-    required: true,
-  },
   sellerName: {
     type: String,
     required: true,
@@ -25,14 +21,10 @@ const sellerSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  sellerAddres: {
+  sellerAddress: {
     type: String,
     required: true,
   },
-  sellerModel: {
-    type: String,
-    required: true,
-  }
 },
 {
     timestamps: true

@@ -1,23 +1,24 @@
 const Seller= require("../models/sellerModel");
 const bcrypt = require('bcrypt');
 
-exports.createSeller = async (req,res) => {
+exports.sellerSignUp = async (req,res) => {
     const {
-        idSeller,
         sellerName,
         sellerEmail,
         sellerPassword,
         sellerPhoneNumber,
         sellerBalance,
+        sellerAddress,
     } = req.body;
     try {
+        const hashedPassword = await bcrypt.hash(sellerPassword, 10);
         const seller = await Seller.create({
-        idSeller,
         sellerName,
         sellerEmail,
-        sellerPassword,
+        sellerPassword: hashedPassword,
         sellerPhoneNumber,
         sellerBalance, 
+        sellerAddress,
         });
         return res.status(201).json({
         success: true,
@@ -59,34 +60,38 @@ exports.sellerSignIn = async (req,res) => {
       }
 };
 
-exports.sellerSignUp = async (res,req) => {
-    const { 
-        sellerName, 
-        sellerEmail, 
-        sellerPassword, 
-        sellerPhoneNumber, 
-    } = req.body;
-
+exports.getSellerById = async (req,res) => {
+    const sellerId = req.params.id;
     try {
-        const existingSeller = await Seller.findOne({ sellerEmail });
-        if (existingSeller) {
-        return res.status(400).json({ message: 'Email already exists' });
+        const seller = await Seller.findById(sellerId);
+        if (!seller) {
+            return res.status(404).json({ message: 'Seller not found' });
         }
-
-        const hashedPassword = await bcrypt.hash(sellerPassword, 10);
-
-        const newSeller = new Seller({
-        sellerName,
-        sellerEmail,
-        sellerPassword: hashedPassword,
-        sellerPhoneNumber,
-        });
-
-        await newSeller.save();
-
-        res.status(201).json({ message: 'Seller created successfully' });
+        res.status(200).json({ 
+            sellerName: seller.sellerName,
+            sellerBalance: seller.sellerBalance,
+            message: "Seller data retrieved succesfully",
+         });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error' });        
     }
 };
+
+exports.updateSellerBalanceById = async (req,res) => {
+    const sellerId = req.params.id;
+    const { newBalance } = req.body;
+    try {
+        const seller = await Seller.findById(sellerId);
+        if (!seller) {
+            return res.status(404).json({ message: 'Seller not found' });
+        }
+        seller.sellerBalance = newBalance;
+        await seller.save();
+        res.status(200).json({ message: 'Seller balance updated successfully', newBalance: seller.sellerBalance });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });     
+    }
+}

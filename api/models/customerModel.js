@@ -1,13 +1,9 @@
 const mongoose = require("mongoose");
 
 const customerSchema = new mongoose.Schema({
-    idCustomer: {
-      type: Number,
-      required: true,
-    },
     custName: {
       type: String,
-      required: true,
+      required: true, 
     },
     custEmail: {
       type: String,
@@ -25,11 +21,14 @@ const customerSchema = new mongoose.Schema({
       type: Number,
       required: false,
     },
-    custAddres: {
+    custAddress: {
       type: String,
       required: true,
     },
   },
+  {
+    timestamps: true
+    }
 );
 
 module.exports = mongoose.model("Customer", customerSchema);
