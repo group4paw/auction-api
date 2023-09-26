@@ -1,6 +1,8 @@
 const Payment = require("../models/Payment");
 const Delivery = require("../models/deliveryModel");
 const Insurance = require("../models/insuranceModel");
+const Seller = require("../models/sellerModel");
+const Customer = require("../models/customerModel");
 
 exports.createPayment = async (req, res) => {
   const {
@@ -114,19 +116,21 @@ exports.updatePaymentToFailed = async (req, res) => {
 };
 
 exports.updatePaymentToPaid = async (req, res) => {
+  const { paymentId } = req.body;
+
   try {
-    const payment = await Payment.findByIdAndUpdate(req.params.id, {
+    const payment = await Payment.findByIdAndUpdate(paymentId, {
       status: "Paid",
     });
 
     const { totalPurchase, sellerId, customerId } = payment;
 
     const seller = await Seller.findByIdAndUpdate(sellerId, {
-      $inc: { balance: totalPurchase },
+      $inc: { sellerBalance: totalPurchase },
     });
 
     const customer = await Customer.findByIdAndUpdate(customerId, {
-      $inc: { balance: -totalPurchase },
+      $inc: { custBalance: -totalPurchase },
     });
 
     if (!payment) {

@@ -19,7 +19,7 @@ router.post("/", createPayment);
 router.get("/", getPayments);
 
 // Params : UserId, Role
-router.get("/:userId:/:role", getPaymentHistory);
+router.get("/:userId/:role", getPaymentHistory);
 
 // Get Payment by Params : status
 router.get("/status/:status", getPaymentsByStatus);
