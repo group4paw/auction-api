@@ -5,8 +5,7 @@ const WishlistItem = require('../models/wishlistItemModel');
 
 // Create a new wishlist
 exports.createWishlist = async (req, res) => {
-  const { 
-    idWishlist, 
+  const {  
     customerId 
   } = req.body;
 
@@ -23,7 +22,11 @@ exports.createWishlist = async (req, res) => {
     }
 
     const wishlist = await Wishlist.create({ 
-      idWishlist, 
+     res.status(201).json({
+      success: true,
+      data: wishlist,
+      message: "Wishlist created successfully",
+    });
       customerId 
     });
     res.status(201).json(wishlist);
@@ -54,7 +57,11 @@ exports.addToWishlist = async (req, res) => {
       idWishlist, 
       idPainting 
     });
-    res.status(200).json(wishlistItem);
+    res.status(200).json({
+      success: true,
+      data: wishlistItem,
+      message: "Wishlist Item added successfully",
+    });
   } catch (error) {
     res.status(500).json({ error: 'Error adding to wishlist' });
   }
