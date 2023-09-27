@@ -4,12 +4,15 @@ const Painting = require('../models/paintingModel');
 const WishlistItem = require('../models/wishlistItemModel');
 
 // Create a new wishlist
-async function createWishlist(req, res) {
-  const { idWishlist, idCustomer } = req.body;
+exports.createWishlist = async (req, res) => {
+  const { 
+    idWishlist, 
+    customerId 
+  } = req.body;
 
   try {
     // Check if the customer and wishlist already exist
-    const customer = await Customer.findOne({ idCustomer });
+    const customer = await Customer.findOne({ customerId });
     if (!customer) {
       return res.status(404).json({ error: 'Customer not found' });
     }
@@ -19,7 +22,10 @@ async function createWishlist(req, res) {
       return res.status(409).json({ error: 'Wishlist already exists' });
     }
 
-    const wishlist = await Wishlist.create({ idWishlist, idCustomer });
+    const wishlist = await Wishlist.create({ 
+      idWishlist, 
+      customerId 
+    });
     res.status(201).json(wishlist);
   } catch (error) {
     res.status(500).json({ error: 'Error creating the wishlist' });
@@ -27,8 +33,11 @@ async function createWishlist(req, res) {
 }
 
 // Add a painting to the wishlist
-async function addToWishlist(req, res) {
-  const { idWishlist, idPainting } = req.params;
+exports.addToWishlist = async (req, res) => {
+  const { 
+    idWishlist,
+    idPainting 
+  } = req.params;
 
   try {
     const wishlist = await Wishlist.findOne({ idWishlist });
@@ -41,7 +50,10 @@ async function addToWishlist(req, res) {
       return res.status(404).json({ error: 'Painting not found' });
     }
 
-    const wishlistItem = await WishlistItem.create({ idWishlist, idPainting });
+    const wishlistItem = await WishlistItem.create({ 
+      idWishlist, 
+      idPainting 
+    });
     res.status(200).json(wishlistItem);
   } catch (error) {
     res.status(500).json({ error: 'Error adding to wishlist' });
@@ -49,8 +61,11 @@ async function addToWishlist(req, res) {
 }
 
 // Remove a painting from the wishlist
-async function removeFromWishlist(req, res) {
-  const { idWishlist, idPainting } = req.params;
+exports.removeFromWishlist = async (req, res) => {
+  const { 
+    idWishlist, 
+    idPainting 
+  } = req.params;
 
   try {
     const wishlistItem = await WishlistItem.findOneAndRemove({ idWishlist, idPainting });
@@ -65,8 +80,10 @@ async function removeFromWishlist(req, res) {
 }
 
 // Get paintings in the wishlist
-async function getWishlistPaintings(req, res) {
-  const { idWishlist } = req.params;
+exports.getWishlsitPaintings = async (req, res) => {
+  const { 
+    idWishlist 
+  } = req.params;
 
   try {
     const wishlist = await Wishlist.findOne({ idWishlist });
@@ -82,9 +99,3 @@ async function getWishlistPaintings(req, res) {
   }
 }
 
-module.exports = {
-  createWishlist,
-  addToWishlist,
-  removeFromWishlist,
-  getWishlistPaintings,
-};
