@@ -5,7 +5,7 @@ const {
   addToWishlist,
   removeFromWishlist,
   getWishlistPaintings,
-} = require('../controllers/wishlistController');
+} = require('../controllers/WishlistController');
 
 // Create a new wishlist
 router.post('/addwishlist', createWishlist);
