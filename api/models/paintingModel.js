@@ -1,21 +1,37 @@
 const mongoose = require('mongoose');
 
-const paintingSchema = new mongoose.Schema({
-  idPainting: { type: Number, unique: true, required: true, default: 0},
-  paintingTitle: { type: String, required: true },
-  paintingDesc: String,
-  idSeller: { type: String, required: true },
-  painting: Buffer, // BLOB (Binary Large Object) stored as a Buffer
+const paintingSchema = new mongoose.Schema(
+  {
+  paintingTitle: {
+     type: String,
+      required: true 
+    },
+  paintingDesc: { 
+    type: String
+  },
+  paintingFile: {
+    type: Buffer // BLOB (Binary Large Object) stored as a Buffer
+  }
 });
 
 // Define the getPaintingInformation method
 paintingSchema.methods.getPaintingInformation = function () {
   const paintingInfo = {
-    idPainting: this.idPainting,
+    idPainting: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      trim: true,
+      ref: "Painting",
+    },
     paintingTitle: this.paintingTitle,
     paintingDesc: this.paintingDesc,
-    idSeller: this.idSeller,
-  };
+    sellerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      trim: true,
+      ref: "Seller",
+    }
+  }
   return paintingInfo;
 };
 
