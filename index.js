@@ -27,7 +27,7 @@ const SellerRouter = require("./api/routes/sellerRoutes.js");
 const Delivery = require("./api/routes/deliveryRoutes.js");
 const Insurance = require("./api/routes/insuranceRoutes.js");
 const PaymentRouter = require("./api/routes/Payment.js");
-const WishlistRouter = require("./api/routes/WishlistRoutes.js");
+const WishlistRouter = require("./api/routes/wishlistRoutes.js");
 const PaintingRouter = require("./api/routes/paintingRoutes.js")
 
 app.use("/wishlist", WishlistRouter);
