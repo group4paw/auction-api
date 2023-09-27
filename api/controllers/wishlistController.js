@@ -86,7 +86,7 @@ exports.removeFromWishlist = async (req, res) => {
 }
 
 // Get paintings in the wishlist
-exports.getWishlsitPaintings = async (req, res) => {
+exports.getWishlistPaintings = async (req, res) => {
   const { 
     idWishlist 
   } = req.params;
