@@ -1,9 +1,18 @@
 const mongoose = require('mongoose');
 
 const wishlistItemSchema = new mongoose.Schema({
-  idWishlist: { type: Number, required: true },
-  idPainting: { type: Number, required: true },
-  // Add other wishlist item-related fields as needed
+  idWishlist: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    trim: true,
+    ref: "Wishlist",
+  },
+  idPainting: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    trim: true,
+    ref: "Painting",
+  },
 });
 
 module.exports = mongoose.model('WishlistItem', wishlistItemSchema);
