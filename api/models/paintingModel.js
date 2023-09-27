@@ -8,9 +8,6 @@ const paintingSchema = new mongoose.Schema(
     },
   paintingDesc: { 
     type: String
-  },
-  paintingFile: {
-    type: Buffer // BLOB (Binary Large Object) stored as a Buffer
   }
 });
 
