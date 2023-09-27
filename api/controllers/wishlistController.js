@@ -86,8 +86,11 @@ exports.removeFromWishlist = async (req, res) => {
 }
 
 // Get paintings in the wishlist
-async function getWishlistPaintings(req, res) {
-  const { idWishlist } = req.params;
+// Get paintings in the wishlist
+exports.getWishlistPaintings = async (req, res) => {
+  const { 
+    idWishlist 
+  } = req.params;
 
   try {
     const wishlist = await Wishlist.findOne({ idWishlist });
@@ -102,4 +105,5 @@ async function getWishlistPaintings(req, res) {
     res.status(500).json({ error: 'Error fetching wishlist paintings' });
   }
 }
+
 
