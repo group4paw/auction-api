@@ -11,12 +11,6 @@ exports.createWishlist = async (req, res) => {
 
 // Create a new wishlist
 try {
-  // Check if the customer already exist
-  const customer = await Customer.findOne({ idCustomer });
-  if (!customer) {
-    return res.status(404).json({ error: 'Customer not found' });
-  }
-
   const wishlist = await Wishlist.create({ 
     idCustomer
   });
