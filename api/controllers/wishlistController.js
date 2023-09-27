@@ -22,14 +22,13 @@ exports.createWishlist = async (req, res) => {
     }
 
     const wishlist = await Wishlist.create({ 
-     res.status(201).json({
+      customerId 
+    });
+    res.status(201).json({
       success: true,
       data: wishlist,
       message: "Wishlist created successfully",
     });
-      customerId 
-    });
-    res.status(201).json(wishlist);
   } catch (error) {
     res.status(500).json({ error: 'Error creating the wishlist' });
   }
