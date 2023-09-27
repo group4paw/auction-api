@@ -4,7 +4,7 @@ const { sellerSignIn } = require("../controllers/sellerController");
 const { sellerSignUp } = require("../controllers/sellerController");
 const router = express.Router();
 
-router.post("/seller", createSeller);
+router.post("/", createSeller);
 router.post("/sigin", sellerSignIn);
 router.post("/signup", sellerSignUp);
 
