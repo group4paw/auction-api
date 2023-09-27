@@ -65,8 +65,10 @@ async function removeFromWishlist(req, res) {
 }
 
 // Get paintings in the wishlist
-async function getWishlistPaintings(req, res) {
-  const { idWishlist } = req.params;
+exports.getWishlistPaintings = async (req, res) => {
+  const { 
+    idWishlist 
+  } = req.params;
 
   try {
     const wishlist = await Wishlist.findOne({ idWishlist });
