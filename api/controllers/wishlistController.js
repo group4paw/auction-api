@@ -4,14 +4,12 @@ const Painting = require('../models/paintingModel');
 const WishlistItem = require('../models/wishlistItemModel');
 
 // Create a new wishlist
-exports.createWishlist = async (req, res) => {
-  const {  
-    customerId 
-  } = req.body;
+async function createWishlist(req, res) {
+  const { idWishlist, idCustomer } = req.body;
 
   try {
     // Check if the customer and wishlist already exist
-    const customer = await Customer.findOne({ customerId });
+    const customer = await Customer.findOne({ idCustomer });
     if (!customer) {
       return res.status(404).json({ error: 'Customer not found' });
     }
@@ -21,25 +19,16 @@ exports.createWishlist = async (req, res) => {
       return res.status(409).json({ error: 'Wishlist already exists' });
     }
 
-    const wishlist = await Wishlist.create({ 
-      customerId 
-    });
-    res.status(201).json({
-      success: true,
-      data: wishlist,
-      message: "Wishlist created successfully",
-    });
+    const wishlist = await Wishlist.create({ idWishlist, idCustomer });
+    res.status(201).json(wishlist);
   } catch (error) {
     res.status(500).json({ error: 'Error creating the wishlist' });
   }
 }
 
 // Add a painting to the wishlist
-exports.addToWishlist = async (req, res) => {
-  const { 
-    idWishlist,
-    idPainting 
-  } = req.params;
+async function addToWishlist(req, res) {
+  const { idWishlist, idPainting } = req.params;
 
   try {
     const wishlist = await Wishlist.findOne({ idWishlist });
@@ -52,26 +41,16 @@ exports.addToWishlist = async (req, res) => {
       return res.status(404).json({ error: 'Painting not found' });
     }
 
-    const wishlistItem = await WishlistItem.create({ 
-      idWishlist, 
-      idPainting 
-    });
-    res.status(200).json({
-      success: true,
-      data: wishlistItem,
-      message: "Wishlist Item added successfully",
-    });
+    const wishlistItem = await WishlistItem.create({ idWishlist, idPainting });
+    res.status(200).json(wishlistItem);
   } catch (error) {
     res.status(500).json({ error: 'Error adding to wishlist' });
   }
 }
 
 // Remove a painting from the wishlist
-exports.removeFromWishlist = async (req, res) => {
-  const { 
-    idWishlist, 
-    idPainting 
-  } = req.params;
+async function removeFromWishlist(req, res) {
+  const { idWishlist, idPainting } = req.params;
 
   try {
     const wishlistItem = await WishlistItem.findOneAndRemove({ idWishlist, idPainting });
@@ -105,3 +84,9 @@ exports.getWishlistPaintings = async (req, res) => {
   }
 }
 
+module.exports = {
+  createWishlist,
+  addToWishlist,
+  removeFromWishlist,
+  getWishlistPaintings,
+};
