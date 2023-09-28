@@ -175,7 +175,18 @@ exports.getPaymentsByStatus = async (req, res) => {
 };
 
 exports.getPaymentsByDate = async (req, res) => {
-  const { startDate, endDate } = req.query;
+  const { startDate, endDate } = req.body;
+
+  const userId = req.headers["user-id"];
+  const role = req.headers["role"];
+
+  const query = {};
+
+  if (role === "Customer") {
+    query.customerId = userId;
+  } else if (role === "Seller") {
+    query.sellerId = userId;
+  }
 
   try {
     const payments = await Payment.find({
@@ -183,6 +194,7 @@ exports.getPaymentsByDate = async (req, res) => {
         $gte: new Date(startDate),
         $lte: new Date(endDate),
       },
+      ...query,
     });
 
     return res.status(200).json({

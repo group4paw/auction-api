@@ -29,6 +29,6 @@ router.put("/paid", updatePaymentToPaid);
 router.put("/failed", updatePaymentToFailed);
 
 // Get Payment by StartDate and EndDate
-router.get("/date/:startDate/:endDate", getPaymentsByDate);
+router.get("/date", getPaymentsByDate);
 
 module.exports = router;
