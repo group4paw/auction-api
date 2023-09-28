@@ -5,7 +5,7 @@ const { getDeliveryById } = require("../controllers/deliveryController");
 const router = express.Router();
 
 router.post("/create", createDelivery);
-router.put("/update-ongkir/:deliveryId", updateOngkirById);
-router.get("/get-delivery/:deliveryId", getDeliveryById);
+router.put("/:id/update-ongkir", updateOngkirById);
+router.get("/:id", getDeliveryById);
 
 module.exports = router;
