@@ -3,32 +3,33 @@ const Customer = require('../models/customerModel');
 const Painting = require('../models/paintingModel');
 const WishlistItem = require('../models/wishlistItemModel');
 
+
+exports.createWishlist = async (req, res) => {
+  const {  
+    idCustomer 
+  } = req.body;
+
 // Create a new wishlist
-async function createWishlist(req, res) {
-  const { idWishlist, idCustomer } = req.body;
-
-  try {
-    // Check if the customer and wishlist already exist
-    const customer = await Customer.findOne({ idCustomer });
-    if (!customer) {
-      return res.status(404).json({ error: 'Customer not found' });
-    }
-
-    const existingWishlist = await Wishlist.findOne({ idWishlist });
-    if (existingWishlist) {
-      return res.status(409).json({ error: 'Wishlist already exists' });
-    }
-
-    const wishlist = await Wishlist.create({ idWishlist, idCustomer });
-    res.status(201).json(wishlist);
-  } catch (error) {
-    res.status(500).json({ error: 'Error creating the wishlist' });
-  }
+try {
+  const wishlist = await Wishlist.create({ 
+    idCustomer
+  });
+  res.status(201).json({
+    success: true,
+    data: wishlist,
+    message: "Wishlist created successfully",
+  });
+} catch (error) {
+  res.status(500).json({ error: 'Error creating the wishlist' });
+}
 }
 
 // Add a painting to the wishlist
-async function addToWishlist(req, res) {
-  const { idWishlist, idPainting } = req.params;
+exports.addToWishlist = async (req, res) => {
+  const { 
+    idWishlist,
+    idPainting 
+  } = req.params;
 
   try {
     const wishlist = await Wishlist.findOne({ idWishlist });
@@ -41,16 +42,26 @@ async function addToWishlist(req, res) {
       return res.status(404).json({ error: 'Painting not found' });
     }
 
-    const wishlistItem = await WishlistItem.create({ idWishlist, idPainting });
-    res.status(200).json(wishlistItem);
+    const wishlistItem = await WishlistItem.create({ 
+      idWishlist, 
+      idPainting 
+    });
+    res.status(200).json({
+      success: true,
+      data: wishlistItem,
+      message: "Wishlist Item added successfully",
+    });
   } catch (error) {
     res.status(500).json({ error: 'Error adding to wishlist' });
   }
 }
 
 // Remove a painting from the wishlist
-async function removeFromWishlist(req, res) {
-  const { idWishlist, idPainting } = req.params;
+exports.removeFromWishlist = async (req, res) => {
+  const { 
+    idWishlist, 
+    idPainting 
+  } = req.params;
 
   try {
     const wishlistItem = await WishlistItem.findOneAndRemove({ idWishlist, idPainting });
@@ -65,8 +76,11 @@ async function removeFromWishlist(req, res) {
 }
 
 // Get paintings in the wishlist
-async function getWishlistPaintings(req, res) {
-  const { idWishlist } = req.params;
+// Get paintings in the wishlist
+exports.getWishlistPaintings = async (req, res) => {
+  const { 
+    idWishlist 
+  } = req.params;
 
   try {
     const wishlist = await Wishlist.findOne({ idWishlist });
@@ -82,9 +96,4 @@ async function getWishlistPaintings(req, res) {
   }
 }
 
-module.exports = {
-  createWishlist,
-  addToWishlist,
-  removeFromWishlist,
-  getWishlistPaintings,
-};
+
