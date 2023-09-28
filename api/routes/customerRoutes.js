@@ -1,11 +1,13 @@
 const express = require("express");
-const { createCustomer } = require("../controllers/customerController");
+const { updateCustomerBalanceById } = require("../controllers/customerController");
 const { customerSignIn } = require("../controllers/customerController");
 const { customerSignUp } = require("../controllers/customerController");
+const { getCustomerById } = require("../controllers/customerController");
 const router = express.Router();
 
-router.post("/create", createCustomer);
-router.post("/sigin", customerSignIn);
+router.put("/:id/update-balance", updateCustomerBalanceById);
+router.post("/signin", customerSignIn);
 router.post("/signup", customerSignUp);
+router.get("/:id", getCustomerById);
 
 module.exports = router;

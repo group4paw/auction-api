@@ -4,6 +4,7 @@ const { getInsuranceById } = require("../controllers/insuranceController");
 const router = express.Router();
 
 router.post("/create", createInsurance);
-router.get("/get-insurance/:insuranceId", getInsuranceById);
+router.get("/:id", getInsuranceById);
+
 
 module.exports = router;

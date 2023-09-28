@@ -3,35 +3,25 @@ const Customer = require('../models/customerModel');
 const Painting = require('../models/paintingModel');
 const WishlistItem = require('../models/wishlistItemModel');
 
-// Create a new wishlist
+
 exports.createWishlist = async (req, res) => {
   const {  
-    customerId 
+    idCustomer 
   } = req.body;
 
-  try {
-    // Check if the customer and wishlist already exist
-    const customer = await Customer.findOne({ customerId });
-    if (!customer) {
-      return res.status(404).json({ error: 'Customer not found' });
-    }
-
-    const existingWishlist = await Wishlist.findOne({ idWishlist });
-    if (existingWishlist) {
-      return res.status(409).json({ error: 'Wishlist already exists' });
-    }
-
-    const wishlist = await Wishlist.create({ 
-      customerId 
-    });
-    res.status(201).json({
-      success: true,
-      data: wishlist,
-      message: "Wishlist created successfully",
-    });
-  } catch (error) {
-    res.status(500).json({ error: 'Error creating the wishlist' });
-  }
+// Create a new wishlist
+try {
+  const wishlist = await Wishlist.create({ 
+    idCustomer
+  });
+  res.status(201).json({
+    success: true,
+    data: wishlist,
+    message: "Wishlist created successfully",
+  });
+} catch (error) {
+  res.status(500).json({ error: 'Error creating the wishlist' });
+}
 }
 
 // Add a painting to the wishlist
@@ -86,6 +76,7 @@ exports.removeFromWishlist = async (req, res) => {
 }
 
 // Get paintings in the wishlist
+// Get paintings in the wishlist
 exports.getWishlistPaintings = async (req, res) => {
   const { 
     idWishlist 
@@ -104,4 +95,5 @@ exports.getWishlistPaintings = async (req, res) => {
     res.status(500).json({ error: 'Error fetching wishlist paintings' });
   }
 }
+
 
