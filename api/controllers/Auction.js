@@ -65,15 +65,15 @@ exports.getAuctionsController = async (req, res) => {
 	// direct get
 	const id = req.params.auctionID;
 	if (id) {
-		if (id.length != 24) res.status(404).json({ message: "Auction not found" });
+		if (id.length != 24) return res.status(404).json({ message: "Auction not found" });
 		Auction.findById(id)
 			.exec()
 			.then((doc) => {
-				if (!doc) res.status(404).json({ message: "Auction not found" });
+				if (!doc) return res.status(404).json({ message: "Auction not found" });
 				else {
 					// additional data
 					const auction = appendAdditionalData(doc);
-					res.status(200).json(auction);
+					return res.status(200).json(auction);
 				}
 			});
 
@@ -114,7 +114,7 @@ exports.removeAuctionsController = async (req, res) => {
 	const { userid } = req.body;
 
 	// find auction and check if its ongoing
-	if (id.length != 24) res.status(404).json({ message: "Auction not found" });
+	if (id.length != 24) return res.status(404).json({ message: "Auction not found" });
 	try {
 		const auction = await Auction.findById(id);
 		if (!auction) return res.status(404).json({ message: "Auction not found" });
@@ -147,7 +147,7 @@ exports.addBidController = async (req, res) => {
 	const { userid, amount } = req.body;
 
 	// find auction and check if its ongoing
-	if (id.length != 24) res.status(404).json({ message: "Auction not found" });
+	if (id.length != 24) return res.status(404).json({ message: "Auction not found" });
 	try {
 		const auction = await Auction.findById(id)
 			.exec()
