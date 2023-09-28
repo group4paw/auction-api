@@ -1,11 +1,17 @@
 const mongoose = require('mongoose');
 
 const wishlistSchema = new mongoose.Schema({
-  customerId: {
+  idCustomer: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     trim: true,
     ref: "Customer",
+  },
+  idPainting: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    trim: true,
+    ref: "Painting",
   }
 });
 
