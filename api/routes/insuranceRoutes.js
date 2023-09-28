@@ -6,4 +6,5 @@ const router = express.Router();
 router.post("/create", createInsurance);
 router.get("/:id", getInsuranceById);
 
+
 module.exports = router;

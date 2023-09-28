@@ -13,6 +13,12 @@ const paymentSchema = new mongoose.Schema({
     trim: true,
     ref: "Painting",
   },
+  idInsurance: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    trim: true,
+    ref: "Insurance",
+  },
   lastBidPrice: {
     type: Number,
     required: true,
@@ -22,17 +28,26 @@ const paymentSchema = new mongoose.Schema({
     default: Date.now,
     required: true,
   },
-  custBalance: {
-    type: Number,
-    required: true,
-  },
-  sellerBalance: {
-    type: Number,
-    required: true,
-  },
   totalPurchase: {
     type: Number,
     required: true,
+  },
+  status: {
+    type: String,
+    enum: ["Pending", "Paid", "Failed"],
+    default: "Pending",
+  },
+  sellerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    trim: true,
+    ref: "Seller",
+  },
+  customerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    trim: true,
+    ref: "Customer",
   },
 });
 
