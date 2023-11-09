@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const ObjectId = require("mongodb").ObjectId;
 const Auction = require("../models/Auction.js");
+const Seller = require("../models/Seller.js");
 const Bid = require("../models/Bid.js");
 const { default: mongoose } = require("mongoose");
 
@@ -67,6 +68,7 @@ exports.addAuctionController = async (req, res) => {
 exports.getAllAuctionsController = async (req, res) => {
   // additional data helper function
   const getAuctions = await Auction.find({}).populate("idPainting").exec();
+  const getSeller = await Seller.findById(getAuctions.owner);
 
   // loop auction
   for (let i = 0; i < getAuctions.length; i++) {
@@ -74,6 +76,8 @@ exports.getAllAuctionsController = async (req, res) => {
     if (auction.startDate > new Date()) auction.status = "coming-soon";
     if (auction.startDate <= new Date()) auction.status = "live";
     if (auction.endDate <= new Date()) auction.status = "over";
+
+    auction.owner = getSeller;
 
     getAuctions[i] = auction;
   }
