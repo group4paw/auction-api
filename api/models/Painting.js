@@ -1,15 +1,54 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const paintingSchema = new mongoose.Schema(
-  {
-  paintingTitle: {
-     type: String,
-      required: true,
-      unique: true
-    },
-  paintingDesc: { 
-    type: String
-  }
+const paintingSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  description: {
+    type: String,
+  },
+  medium: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  width: {
+    type: Number,
+    required: true,
+    trim: true,
+  },
+  height: {
+    type: Number,
+    required: true,
+    trim: true,
+  },
+  frame: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  cityFrom: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  weight: {
+    type: Number,
+    required: true,
+    trim: true,
+  },
+  sellerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    trim: true,
+    ref: "Seller",
+  },
+  timestamp: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 // Define the getPaintingInformation method
@@ -21,16 +60,16 @@ paintingSchema.methods.getPaintingInformation = function () {
       trim: true,
       ref: "Painting",
     },
-    paintingTitle: this.paintingTitle,
-    paintingDesc: this.paintingDesc,
+    title: this.title,
+    description: this.description,
     sellerId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       trim: true,
       ref: "Seller",
-    }
-  }
+    },
+  };
   return paintingInfo;
 };
 
-module.exports = mongoose.model('Painting', paintingSchema);
+module.exports = mongoose.model("Painting", paintingSchema);

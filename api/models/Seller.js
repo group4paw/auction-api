@@ -1,34 +1,36 @@
 const mongoose = require("mongoose");
 
-const sellerSchema = new mongoose.Schema({
-  sellerName: {
-    type: String,
-    required: true,
+const sellerSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    phoneNumber: {
+      type: Number,
+      required: true,
+    },
+    balance: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    address: {
+      type: String,
+      required: true,
+    },
   },
-  sellerEmail: {
-    type: String,
-    required: true,
-  },
-  sellerPassword: {
-    type: String,
-    required: true,
-  },
-  sellerPhoneNumber: {
-    type: Number,
-    required: true,
-  },
-  sellerBalance: {
-    type: Number,
-    required: true,
-  },
-  sellerAddress: {
-    type: String,
-    required: true,
-  },
-},
-{
-    timestamps: true
-    }
+  {
+    timestamps: true,
+  }
 );
 
 module.exports = mongoose.model("Seller", sellerSchema);
