@@ -1,14 +1,11 @@
-const Painting = require('../models/paintingModel');
+const Painting = require("../models/Painting");
 
 exports.createPainting = async (req, res) => {
-  const {
-     paintingTitle,
-     paintingDesc
-  } = req.body;
+  const { paintingTitle, paintingDesc } = req.body;
   try {
     const painting = await Painting.create({
-        paintingTitle,
-        paintingDesc
+      paintingTitle,
+      paintingDesc,
     });
     return res.status(201).json({
       success: true,
@@ -24,38 +21,42 @@ exports.createPainting = async (req, res) => {
   }
 };
 
-exports.getPaintingById = async (req,res) => {
+exports.getPaintingById = async (req, res) => {
   const paintingId = req.params.id;
   try {
-      const painting = await Painting.findById(paintingId);
-      if (!painting) {
-          return res.status(404).json({ message: 'painting not found' });
-      }
-      res.status(200).json({ 
-          paintingTitle: painting.paintingTitle,
-          paintingDesc: painting.paintingDesc,
-          message: "painting data retrieved succesfully",
-       });
+    const painting = await Painting.findById(paintingId);
+    if (!painting) {
+      return res.status(404).json({ message: "painting not found" });
+    }
+    res.status(200).json({
+      paintingTitle: painting.paintingTitle,
+      paintingDesc: painting.paintingDesc,
+      message: "painting data retrieved succesfully",
+    });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Server error' });        
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-exports.updatePaintingDescById = async (req,res) => {
+exports.updatePaintingDescById = async (req, res) => {
   const paintingId = req.params.id;
   const { newDesc } = req.body;
   try {
-      const painting = await Painting.findById(paintingId);
-      if (!painting) {
-          return res.status(404).json({ message: 'painting not found' });
-      }
-      painting.paintingDesc = newDesc;
-      await painting.save();
-      res.status(200).json({ message: 'Painting description updated successfully', newDesc: painting.paintingDesc });
-
+    const painting = await Painting.findById(paintingId);
+    if (!painting) {
+      return res.status(404).json({ message: "painting not found" });
+    }
+    painting.paintingDesc = newDesc;
+    await painting.save();
+    res
+      .status(200)
+      .json({
+        message: "Painting description updated successfully",
+        newDesc: painting.paintingDesc,
+      });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Server error' });     
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 };
