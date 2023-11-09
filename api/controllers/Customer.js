@@ -2,22 +2,14 @@ const Customer = require("../models/Customer");
 const bcrypt = require("bcrypt");
 
 exports.customerSignUp = async (req, res) => {
-  const {
-    custName,
-    custEmail,
-    custPassword,
-    custPhoneNumber,
-    custBalance,
-    custAddress,
-  } = req.body;
+  const { name, email, password, phoneNumber, custAddress } = req.body;
   try {
-    const hashedPassword = await bcrypt.hash(custPassword, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
     const customer = await Customer.create({
-      custName,
-      custEmail,
-      custPassword: hashedPassword,
-      custPhoneNumber,
-      custBalance,
+      name,
+      email,
+      password: hashedPassword,
+      phoneNumber,
       custAddress,
     });
     return res.status(201).json({
@@ -35,18 +27,15 @@ exports.customerSignUp = async (req, res) => {
 };
 
 exports.customerSignIn = async (req, res) => {
-  const { custEmail, custPassword } = req.body;
+  const { email, password } = req.body;
   try {
-    const customer = await Customer.findOne({ custEmail });
+    const customer = await Customer.findOne({ email });
 
     if (!customer) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    const passwordMatch = await bcrypt.compare(
-      custPassword,
-      customer.custPassword
-    );
+    const passwordMatch = await bcrypt.compare(password, customer.password);
 
     if (!passwordMatch) {
       return res.status(401).json({ message: "Invalid email or password" });
@@ -67,7 +56,7 @@ exports.getCustomerById = async (req, res) => {
       return res.status(404).json({ message: "Customer not found" });
     }
     res.status(200).json({
-      custName: customer.custName,
+      name: customer.name,
       custBalance: customer.custBalance,
       message: "Customer data retrieved succesfully",
     });

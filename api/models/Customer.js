@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 
-const customerSchema = new mongoose.Schema({
+const customerSchema = new mongoose.Schema(
+  {
     custName: {
       type: String,
-      required: true, 
+      required: true,
     },
     custEmail: {
       type: String,
@@ -20,6 +21,7 @@ const customerSchema = new mongoose.Schema({
     custBalance: {
       type: Number,
       required: false,
+      default: 0,
     },
     custAddress: {
       type: String,
@@ -27,8 +29,8 @@ const customerSchema = new mongoose.Schema({
     },
   },
   {
-    timestamps: true
-    }
+    timestamps: true,
+  }
 );
 
 module.exports = mongoose.model("Customer", customerSchema);
