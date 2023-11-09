@@ -1,8 +1,8 @@
 const Payment = require("../models/Payment");
-const Delivery = require("../models/deliveryModel");
-const Insurance = require("../models/insuranceModel");
-const Seller = require("../models/sellerModel");
-const Customer = require("../models/customerModel");
+const Delivery = require("../models/Delivery");
+const Insurance = require("../models/Insurance");
+const Seller = require("../models/Seller");
+const Customer = require("../models/Customer");
 
 exports.createPayment = async (req, res) => {
   const {
