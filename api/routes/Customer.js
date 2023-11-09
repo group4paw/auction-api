@@ -1,8 +1,8 @@
 const express = require("express");
-const { updateCustomerBalanceById } = require("../controllers/customerController");
-const { customerSignIn } = require("../controllers/customerController");
-const { customerSignUp } = require("../controllers/customerController");
-const { getCustomerById } = require("../controllers/customerController");
+const { updateCustomerBalanceById } = require("../controllers/Customer");
+const { customerSignIn } = require("../controllers/Customer");
+const { customerSignUp } = require("../controllers/Customer");
+const { getCustomerById } = require("../controllers/Customer");
 const router = express.Router();
 
 router.put("/:id/update-balance", updateCustomerBalanceById);

@@ -1,7 +1,7 @@
 const express = require("express");
-const { createDelivery } = require("../controllers/deliveryController");
-const { updateOngkirById } = require("../controllers/deliveryController");
-const { getDeliveryById } = require("../controllers/deliveryController");
+const { createDelivery } = require("../controllers/Delivery");
+const { updateOngkirById } = require("../controllers/Delivery");
+const { getDeliveryById } = require("../controllers/Delivery");
 const router = express.Router();
 
 router.post("/create", createDelivery);

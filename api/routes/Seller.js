@@ -1,10 +1,9 @@
 const express = require("express");
-const { getSellerById } = require("../controllers/sellerController");
-const { updateSellerBalanceById } = require("../controllers/sellerController");
-const { sellerSignIn } = require("../controllers/sellerController");
-const { sellerSignUp } = require("../controllers/sellerController");
+const { getSellerById } = require("../controllers/Seller");
+const { updateSellerBalanceById } = require("../controllers/Seller");
+const { sellerSignIn } = require("../controllers/Seller");
+const { sellerSignUp } = require("../controllers/Seller");
 const router = express.Router();
-
 
 router.get("/:id", getSellerById);
 router.post("/signin", sellerSignIn);
