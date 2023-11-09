@@ -1,12 +1,33 @@
 const Painting = require("../models/Painting");
 
 exports.createPainting = async (req, res) => {
-  const { paintingTitle, paintingDesc } = req.body;
+  const {
+    title,
+    description,
+    medium,
+    width,
+    height,
+    frame,
+    cityFrom,
+    weight,
+    sellerId,
+    image,
+  } = req.body;
   try {
     const painting = await Painting.create({
-      paintingTitle,
-      paintingDesc,
+      title,
+      description,
+      medium,
+      width,
+      height,
+      frame,
+      cityFrom,
+      weight,
+      sellerId,
+      image,
     });
+
+    painting.sellerId = undefined;
     return res.status(201).json({
       success: true,
       data: painting,
@@ -29,8 +50,7 @@ exports.getPaintingById = async (req, res) => {
       return res.status(404).json({ message: "painting not found" });
     }
     res.status(200).json({
-      paintingTitle: painting.paintingTitle,
-      paintingDesc: painting.paintingDesc,
+      painting,
       message: "painting data retrieved succesfully",
     });
   } catch (error) {
@@ -49,12 +69,10 @@ exports.updatePaintingDescById = async (req, res) => {
     }
     painting.paintingDesc = newDesc;
     await painting.save();
-    res
-      .status(200)
-      .json({
-        message: "Painting description updated successfully",
-        newDesc: painting.paintingDesc,
-      });
+    res.status(200).json({
+      message: "Painting description updated successfully",
+      newDesc: painting.paintingDesc,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

@@ -1,28 +1,21 @@
 const Seller = require("../models/Seller");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 exports.sellerSignUp = async (req, res) => {
-  const {
-    sellerName,
-    sellerEmail,
-    sellerPassword,
-    sellerPhoneNumber,
-    sellerBalance,
-    sellerAddress,
-  } = req.body;
+  const { name, username, email, password, phoneNumber, address } = req.body;
   try {
-    const hashedPassword = await bcrypt.hash(sellerPassword, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
     const seller = await Seller.create({
-      sellerName,
-      sellerEmail,
-      sellerPassword: hashedPassword,
-      sellerPhoneNumber,
-      sellerBalance,
-      sellerAddress,
+      name,
+      username,
+      email,
+      password: hashedPassword,
+      phoneNumber,
+      address,
     });
     return res.status(201).json({
       success: true,
-      data: seller,
       message: "Seller created succesfully",
     });
   } catch (error) {
@@ -35,24 +28,27 @@ exports.sellerSignUp = async (req, res) => {
 };
 
 exports.sellerSignIn = async (req, res) => {
-  const { sellerEmail, sellerPassword } = req.body;
+  const { email, password } = req.body;
   try {
-    const seller = await Seller.findOne({ sellerEmail });
+    const seller = await Seller.findOne({ email });
 
     if (!seller) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    const passwordMatch = await bcrypt.compare(
-      sellerPassword,
-      seller.sellerPassword
-    );
+    const passwordMatch = await bcrypt.compare(password, seller.password);
 
     if (!passwordMatch) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    res.status(200).json({ message: "Sign-in successful", seller });
+    const token = jwt.sign({ _id: seller.id }, process.env.JWT_SECRET, {
+      expiresIn: "3h",
+    });
+
+    seller.password = undefined;
+
+    res.status(200).json({ message: "Sign-in successful", seller, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -87,12 +83,10 @@ exports.updateSellerBalanceById = async (req, res) => {
     }
     seller.sellerBalance = newBalance;
     await seller.save();
-    res
-      .status(200)
-      .json({
-        message: "Seller balance updated successfully",
-        newBalance: seller.sellerBalance,
-      });
+    res.status(200).json({
+      message: "Seller balance updated successfully",
+      newBalance: seller.sellerBalance,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

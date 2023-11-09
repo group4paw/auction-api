@@ -6,6 +6,10 @@ const customerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    username: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -26,6 +30,10 @@ const customerSchema = new mongoose.Schema(
     address: {
       type: String,
       required: true,
+    },
+    image: {
+      type: String,
+      required: false,
     },
   },
   {

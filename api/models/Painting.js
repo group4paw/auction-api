@@ -1,55 +1,61 @@
 const mongoose = require("mongoose");
 
-const paintingSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-    unique: true,
+const paintingSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    description: {
+      type: String,
+    },
+    medium: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    width: {
+      type: Number,
+      required: true,
+      trim: true,
+    },
+    height: {
+      type: Number,
+      required: true,
+      trim: true,
+    },
+    frame: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    cityFrom: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    weight: {
+      type: Number,
+      required: true,
+      trim: true,
+    },
+    image: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    sellerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      trim: true,
+      ref: "Seller",
+    },
   },
-  description: {
-    type: String,
-  },
-  medium: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  width: {
-    type: Number,
-    required: true,
-    trim: true,
-  },
-  height: {
-    type: Number,
-    required: true,
-    trim: true,
-  },
-  frame: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  cityFrom: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  weight: {
-    type: Number,
-    required: true,
-    trim: true,
-  },
-  sellerId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    trim: true,
-    ref: "Seller",
-  },
-  timestamp: {
-    type: Date,
-    default: Date.now,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 // Define the getPaintingInformation method
 paintingSchema.methods.getPaintingInformation = function () {
