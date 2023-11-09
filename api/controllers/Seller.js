@@ -3,7 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 exports.sellerSignUp = async (req, res) => {
-  const { name, username, email, password, phoneNumber, address } = req.body;
+  const { name, username, email, password, phoneNumber, address, image } =
+    req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const seller = await Seller.create({
@@ -13,6 +14,7 @@ exports.sellerSignUp = async (req, res) => {
       password: hashedPassword,
       phoneNumber,
       address,
+      image,
     });
     return res.status(201).json({
       success: true,

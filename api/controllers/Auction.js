@@ -68,16 +68,35 @@ exports.addAuctionController = async (req, res) => {
 exports.getAllAuctionsController = async (req, res) => {
   // additional data helper function
   const getAuctions = await Auction.find({}).populate("idPainting").exec();
-  const getSeller = await Seller.findById(getAuctions.owner);
-
   // loop auction
   for (let i = 0; i < getAuctions.length; i++) {
     const auction = getAuctions[i].toJSON();
-    if (auction.startDate > new Date()) auction.status = "coming-soon";
-    if (auction.startDate <= new Date()) auction.status = "live";
+    if (auction.startDate > new Date()) {
+      auction.status = "coming-soon";
+      time = auction.startDate - new Date();
+      auction.timeLeft = time;
+    }
+    if (auction.startDate <= new Date()) {
+      auction.status = "live";
+      auction.timeLeft = auction.endDate - new Date();
+    }
     if (auction.endDate <= new Date()) auction.status = "over";
 
-    auction.owner = getSeller;
+    const bid = await Bid.find({ auction: auction._id })
+      .sort({ amount: -1 })
+      .limit(1)
+      .exec();
+    if (bid.length > 0) {
+      auction.highestBid = bid[0].amount;
+    } else {
+      auction.highestBid = auction.startingPrice;
+    }
+
+    const seller = await Seller.findById(auction.owner).exec();
+    auction.owner = {
+      name: seller.name,
+      image: seller.image,
+    };
 
     getAuctions[i] = auction;
   }
