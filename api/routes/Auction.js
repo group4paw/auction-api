@@ -8,12 +8,14 @@ const {
   addBidController,
   setBidController,
   getAllAuctionsController,
+  getAuctionsByIdController,
 } = require("../controllers/Auction.js");
 
 // Register User
 router.post("/", addAuctionController);
 router.get("/", getAllAuctionsController);
-router.get("/:auctionID?", getAuctionsController);
+router.get("/:auctionID", getAuctionsByIdController);
+// router.get("/:auctionID?", getAuctionsController);
 router.delete("/:auctionID/delete", removeAuctionsController);
 router.put("/:auctionID/bid", addBidController);
 router.post("/bid/:auctionID", setBidController);
