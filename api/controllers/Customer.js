@@ -2,15 +2,18 @@ const Customer = require("../models/Customer");
 const bcrypt = require("bcrypt");
 
 exports.customerSignUp = async (req, res) => {
-  const { name, email, password, phoneNumber, custAddress } = req.body;
+  const { name, username, email, password, phoneNumber, address, image } =
+    req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const customer = await Customer.create({
       name,
+      username,
       email,
       password: hashedPassword,
       phoneNumber,
-      custAddress,
+      address,
+      image,
     });
     return res.status(201).json({
       success: true,

@@ -6,6 +6,10 @@ const sellerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    username: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -22,6 +26,10 @@ const sellerSchema = new mongoose.Schema(
       type: Number,
       required: false,
       default: 0,
+    },
+    image: {
+      type: String,
+      required: false,
     },
     address: {
       type: String,
