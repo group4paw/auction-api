@@ -1,4 +1,4 @@
-const Wishlist = require("../models/wishlistModel");
+const Wishlist = require("../models/Wishlist");
 const Customer = require("../models/Customer");
 const Painting = require("../models/Painting");
 
