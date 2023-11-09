@@ -4,6 +4,9 @@ const bodyParser = require("body-parser");
 const connectDB = require("./api/config/db");
 const dotenv = require("dotenv");
 
+const cors = require("cors");
+app.use(cors());
+
 dotenv.config({ path: "./.env" });
 
 app.use(bodyParser.urlencoded({ extended: true }));
