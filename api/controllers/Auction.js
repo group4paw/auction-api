@@ -104,6 +104,49 @@ exports.getAllAuctionsController = async (req, res) => {
   return res.status(200).json(getAuctions);
 };
 
+exports.getAuctionsByIdController = async (req, res) => {
+  // additional data helper function
+  const getAuctions = await Auction.find({
+    _id: new mongoose.Types.ObjectId(req.params.auctionID),
+  })
+    .populate("idPainting")
+    .exec();
+  // loop auction
+  for (let i = 0; i < getAuctions.length; i++) {
+    const auction = getAuctions[i].toJSON();
+    if (auction.startDate > new Date()) {
+      auction.status = "coming-soon";
+      time = auction.startDate - new Date();
+      auction.timeLeft = time;
+    }
+    if (auction.startDate <= new Date()) {
+      auction.status = "live";
+      auction.timeLeft = auction.endDate - new Date();
+    }
+    if (auction.endDate <= new Date()) auction.status = "over";
+
+    const bid = await Bid.find({ auction: auction._id })
+      .sort({ amount: -1 })
+      .limit(1)
+      .exec();
+    if (bid.length > 0) {
+      auction.highestBid = bid[0].amount;
+    } else {
+      auction.highestBid = auction.startingPrice;
+    }
+
+    const seller = await Seller.findById(auction.owner).exec();
+    auction.owner = {
+      name: seller.name,
+      image: seller.image,
+    };
+
+    getAuctions[i] = auction;
+  }
+
+  return res.status(200).json(getAuctions);
+};
+
 exports.getAuctionsController = async (req, res) => {
   // additional data helper function
   function appendAdditionalData(doc) {
