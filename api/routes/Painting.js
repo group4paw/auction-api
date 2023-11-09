@@ -1,7 +1,7 @@
 const express = require("express");
-const { createPainting } = require("../controllers/paintingController");
-const { getPaintingById } = require("../controllers/paintingController");
-const { updatePaintingDescById } = require("../controllers/paintingController");
+const { createPainting } = require("../controllers/Painting");
+const { getPaintingById } = require("../controllers/Painting");
+const { updatePaintingDescById } = require("../controllers/Painting");
 const router = express.Router();
 
 router.post("/create", createPainting);
