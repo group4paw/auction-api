@@ -22,14 +22,13 @@ app.listen(3000, () => {
 
 // Route
 const AuctionRouter = require("./api/routes/Auction.js");
-const CustomerRouter = require("./api/routes/customerRoutes.js");
-const SellerRouter = require("./api/routes/sellerRoutes.js");
-const DeliveryRouter = require("./api/routes/deliveryRoutes.js");
-const InsuranceRouter = require("./api/routes/insuranceRoutes.js");
+const CustomerRouter = require("./api/routes/Customer.js");
+const SellerRouter = require("./api/routes/Seller.js");
+const DeliveryRouter = require("./api/routes/Delivery.js");
+const InsuranceRouter = require("./api/routes/Insurance.js");
 const PaymentRouter = require("./api/routes/Payment.js");
-const WishlistRouter = require("./api/routes/wishlistRoutes.js");
-const PaintingRouter = require("./api/routes/paintingRoutes.js")
-
+const WishlistRouter = require("./api/routes/Wishlist.js");
+const PaintingRouter = require("./api/routes/Painting.js");
 
 app.use("/wishlist", WishlistRouter);
 app.use("/customer", CustomerRouter);
@@ -39,4 +38,3 @@ app.use("/insurance", InsuranceRouter);
 app.use("/payment", PaymentRouter);
 app.use("/auction", AuctionRouter);
 app.use("/painting", PaintingRouter);
-
