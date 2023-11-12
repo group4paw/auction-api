@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const wishlistSchema = new mongoose.Schema({
   idCustomer: {
@@ -7,12 +7,12 @@ const wishlistSchema = new mongoose.Schema({
     trim: true,
     ref: "Customer",
   },
-  idPainting: {
+  idAuction: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     trim: true,
-    ref: "Painting",
-  }
+    ref: "Auction",
+  },
 });
 
-module.exports = mongoose.model('Wishlist', wishlistSchema);
+module.exports = mongoose.model("Wishlist", wishlistSchema);
