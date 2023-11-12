@@ -3,13 +3,13 @@ const Customer = require("../models/Customer");
 const Painting = require("../models/Painting");
 
 exports.createWishlist = async (req, res) => {
-  const { idCustomer, idPainting } = req.body;
+  const { idCustomer, idAuction } = req.body;
 
   // Create a new wishlist
   try {
     const wishlist = await Wishlist.create({
       idCustomer,
-      idPainting,
+      idAuction,
     });
     res.status(201).json({
       success: true,
@@ -23,22 +23,12 @@ exports.createWishlist = async (req, res) => {
 
 // Add a painting to the wishlist
 exports.addToWishlist = async (req, res) => {
-  const { idWishlist, idPainting } = req.params;
+  const { idCustomer, idAuction } = req.params;
 
   try {
-    const wishlist = await Wishlist.findOne({ idWishlist });
-    if (!wishlist) {
-      return res.status(404).json({ error: "Wishlist not found" });
-    }
-
-    const painting = await Painting.findOne({ idPainting });
-    if (!painting) {
-      return res.status(404).json({ error: "Painting not found" });
-    }
-
-    const wishlistItem = await WishlistItem.create({
-      idWishlist,
-      idPainting,
+    const wishlistItem = await Wishlist.create({
+      idCustomer,
+      idAuction,
     });
     res.status(200).json({
       success: true,
@@ -52,18 +42,21 @@ exports.addToWishlist = async (req, res) => {
 
 // Remove a painting from the wishlist
 exports.removeFromWishlist = async (req, res) => {
-  const { idWishlist, idPainting } = req.params;
+  const { idWishlist, idAuction } = req.params;
 
   try {
-    const wishlistItem = await WishlistItem.findOneAndRemove({
+    const wishlistItem = await Wishlist.findOneAndRemove({
       idWishlist,
-      idPainting,
+      idAuction,
     });
     if (!wishlistItem) {
       return res.status(404).json({ error: "Wishlist item not found" });
     }
 
-    res.status(204).json();
+    res.status(204).json({
+      success: true,
+      message: "Wishlist item removed successfully",
+    });
   } catch (error) {
     res.status(500).json({ error: "Error removing from wishlist" });
   }
@@ -87,5 +80,18 @@ exports.getWishlistPaintings = async (req, res) => {
     res.status(200).json(paintings);
   } catch (error) {
     res.status(500).json({ error: "Error fetching wishlist paintings" });
+  }
+};
+
+exports.getAllWishlist = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const wishlist = await Wishlist.find({ idCustomer: userId });
+    if (!wishlist) {
+      return res.status(404).json({ error: "Wishlist not found" });
+    }
+    res.status(200).json(wishlist);
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching wishlist" });
   }
 };
