@@ -42,11 +42,10 @@ exports.addToWishlist = async (req, res) => {
 
 // Remove a painting from the wishlist
 exports.removeFromWishlist = async (req, res) => {
-  const { idWishlist, idAuction } = req.params;
+  const { idAuction } = req.params;
 
   try {
     const wishlistItem = await Wishlist.findOneAndRemove({
-      idWishlist,
       idAuction,
     });
     if (!wishlistItem) {
