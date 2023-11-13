@@ -42,16 +42,21 @@ exports.addToWishlist = async (req, res) => {
 
 // Remove a painting from the wishlist
 exports.removeFromWishlist = async (req, res) => {
-  const { idAuction } = req.params;
+  const { idAuction, userId } = req.params;
 
   try {
-    const wishlistItem = await Wishlist.findOneAndRemove({
+    const wishlist = await Wishlist.findOneAndRemove({
+      idCustomer: userId,
       idAuction: idAuction,
     });
 
-    res.status(204).json({
+    if (!wishlist) {
+      return res.status(404).json({ error: "Wishlist not found" });
+    }
+
+    res.status(200).json({
       success: true,
-      message: "Auction has been removed from your wishlist",
+      message: "Wishlist Item removed successfully",
     });
   } catch (error) {
     res.status(500).json({ error: "Error removing from wishlist" });
