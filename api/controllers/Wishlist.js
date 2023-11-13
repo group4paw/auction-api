@@ -48,13 +48,10 @@ exports.removeFromWishlist = async (req, res) => {
     const wishlistItem = await Wishlist.findOneAndRemove({
       idAuction,
     });
-    if (!wishlistItem) {
-      return res.status(404).json({ error: "Wishlist item not found" });
-    }
 
     res.status(204).json({
       success: true,
-      message: "Wishlist item removed successfully",
+      message: "Auction has been removed from your wishlist",
     });
   } catch (error) {
     res.status(500).json({ error: "Error removing from wishlist" });
