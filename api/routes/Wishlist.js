@@ -12,7 +12,7 @@ const {
 router.post("/", addToWishlist);
 
 // Remove a painting from the wishlist
-router.delete("/:id", removeFromWishlist);
+router.delete("/:userId/:idAuction", removeFromWishlist);
 
 // Get paintings in the wishlist
 router.get("/id/:id", getWishlistPaintings);
