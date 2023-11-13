@@ -9,14 +9,14 @@ const {
 } = require("../controllers/Wishlist");
 
 // Create a new wishlist
-router.post("/wishlist", addToWishlist);
+router.post("/", addToWishlist);
 
 // Remove a painting from the wishlist
-router.delete("/wishlist/:id", removeFromWishlist);
+router.delete("/:id", removeFromWishlist);
 
 // Get paintings in the wishlist
-router.get("/wishlist/id/:id", getWishlistPaintings);
+router.get("/id/:id", getWishlistPaintings);
 
-router.get("/wishlist/:userId", getAllWishlist);
+router.get("/:userId", getAllWishlist);
 
 module.exports = router;
