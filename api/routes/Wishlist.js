@@ -17,6 +17,6 @@ router.delete("/wishlist/:id", removeFromWishlist);
 // Get paintings in the wishlist
 router.get("/wishlist/id/:id", getWishlistPaintings);
 
-router.get("/wishlist/user", getAllWishlist);
+router.get("/wishlist/:userId", getAllWishlist);
 
 module.exports = router;
