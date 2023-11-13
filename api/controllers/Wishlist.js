@@ -23,7 +23,7 @@ exports.createWishlist = async (req, res) => {
 
 // Add a painting to the wishlist
 exports.addToWishlist = async (req, res) => {
-  const { idCustomer, idAuction } = req.params;
+  const { idCustomer, idAuction } = req.body;
 
   try {
     const wishlistItem = await Wishlist.create({
