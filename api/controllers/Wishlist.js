@@ -46,7 +46,7 @@ exports.removeFromWishlist = async (req, res) => {
 
   try {
     const wishlistItem = await Wishlist.findOneAndRemove({
-      idAuction,
+      idAuction: idAuction,
     });
 
     res.status(204).json({
