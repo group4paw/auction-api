@@ -19,6 +19,12 @@ exports.getBidbyAuctionId = async (req, res) => {
       data.push(bid);
     }
 
+    // sort bid by date and get top 3
+    data.sort((a, b) => {
+      return b.bidDate - a.bidDate;
+    });
+    data = data.slice(0, 3);
+
     res.status(200).json(data);
   } catch (error) {
     console.error(error);
