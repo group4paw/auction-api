@@ -46,6 +46,10 @@ exports.customerSignIn = async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
+    customer.password = undefined;
+    customer.updatedAt = undefined;
+    customer.role = "buyer";
+
     res.status(200).json({ message: "Sign-in successful", customer });
   } catch (error) {
     console.error(error);

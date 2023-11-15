@@ -49,6 +49,7 @@ exports.sellerSignIn = async (req, res) => {
     });
 
     seller.password = undefined;
+    seller.role = "seller";
 
     res.status(200).json({ message: "Sign-in successful", seller, token });
   } catch (error) {
