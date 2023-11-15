@@ -1,5 +1,7 @@
 const Customer = require("../models/Customer");
 const bcrypt = require("bcrypt");
+const Wishlist = require("../models/Wishlist");
+const Bid = require("../models/Bid.js");
 
 exports.customerSignUp = async (req, res) => {
   const { name, username, email, password, phoneNumber, address, image } =
@@ -86,5 +88,28 @@ exports.updateCustomerBalanceById = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+exports.getInformationUser = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    // get count wishlist from customer
+    const countWishlist = await Wishlist.find({ idCustomer: userId }).count();
+    // get count bid from customer
+    const countBid = await Bid.find({ idCustomer: userId }).count();
+
+    res.status(200).json({
+      success: true,
+      data: {
+        countWishlist,
+        countBid,
+      },
+      message: "Information user retrieved successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error });
   }
 };
