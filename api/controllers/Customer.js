@@ -48,9 +48,10 @@ exports.customerSignIn = async (req, res) => {
 
     customer.password = undefined;
     customer.updatedAt = undefined;
-    customer.role = "buyer";
 
-    res.status(200).json({ message: "Sign-in successful", customer });
+    res
+      .status(200)
+      .json({ message: "Sign-in successful", customer, role: "buyer" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
