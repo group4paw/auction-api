@@ -32,6 +32,7 @@ const InsuranceRouter = require("./api/routes/Insurance.js");
 const PaymentRouter = require("./api/routes/Payment.js");
 const WishlistRouter = require("./api/routes/Wishlist.js");
 const PaintingRouter = require("./api/routes/Painting.js");
+const BidRouter = require("./api/routes/Bid.js");
 
 app.use("/wishlist", WishlistRouter);
 app.use("/customer", CustomerRouter);
@@ -41,3 +42,4 @@ app.use("/insurance", InsuranceRouter);
 app.use("/payment", PaymentRouter);
 app.use("/auction", AuctionRouter);
 app.use("/painting", PaintingRouter);
+app.use("/bid", BidRouter);
