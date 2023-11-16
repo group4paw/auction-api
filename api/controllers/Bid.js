@@ -35,7 +35,7 @@ exports.getBidbyAuctionId = async (req, res) => {
 exports.getAuctionByUserIdByBidder = async (req, res) => {
   const { userId } = req.params;
   try {
-    const bids = await Bid.find({ bidder: userId }).populate("auction").exec();
+    const bids = await Bid.find({ bidder: userId });
     return res.status(200).json(bids);
   } catch (error) {
     console.error(error);
