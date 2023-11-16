@@ -97,13 +97,13 @@ exports.updateCustomerBalanceById = async (req, res) => {
 };
 
 exports.getInformationUser = async (req, res) => {
-  const { userId } = req.params;
+  const { id } = req.params;
 
   try {
     // get count wishlist from customer
-    const countWishlist = await Wishlist.find({ idCustomer: userId }).count();
+    const countWishlist = await Wishlist.find({ idCustomer: id }).count();
     // get count bid from customer
-    const countBid = await Bid.find({ idCustomer: userId }).count();
+    const countBid = await Bid.find({ bidder: id }).count();
 
     res.status(200).json({
       success: true,
