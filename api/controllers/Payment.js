@@ -295,6 +295,7 @@ exports.updateBalance = async (req, res) => {
 
     return res.status(200).json({
       success: true,
+      customer: customer,
       message: "Payment status updated to paid successfully",
     });
   } catch (error) {
