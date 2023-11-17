@@ -3,6 +3,7 @@ const Delivery = require("../models/Delivery");
 const Insurance = require("../models/Insurance");
 const Seller = require("../models/Seller");
 const Customer = require("../models/Customer");
+const Topup = require("../models/Topup");
 
 exports.createPayment = async (req, res) => {
   const {
@@ -207,6 +208,100 @@ exports.getPaymentsByDate = async (req, res) => {
     return res.status(500).json({
       success: false,
       error: error.message,
+    });
+  }
+};
+
+exports.topUpBalance = async (req, res) => {
+  const { amount, userId } = req.body;
+
+  let find = true;
+  let order_id = "";
+
+  while (find) {
+    order_id =
+      "topup" + "-" + Math.floor(100000000 + Math.random() * 900000000);
+    const check = await Payment.findOne({ topupId: order_id });
+    if (!check) {
+      find = false;
+    }
+  }
+
+  try {
+    const userEmail = await Customer.findById(userId);
+
+    const parameter = {
+      transaction_details: {
+        order_id: order_id,
+        gross_amount: amount,
+      },
+      customer_details: {
+        email: userEmail.email,
+      },
+    };
+
+    const response = await fetch(process.env.MIDTRANS_URL || "", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Basic ${process.env.MIDTRANS_SERVER_KEY_HASHED}}`,
+      },
+      body: JSON.stringify(parameter),
+    });
+
+    const result = await response.json();
+
+    const payment = await Topup.create({
+      idCustomer: userId,
+      topupId: order_id,
+      amount: amount,
+    });
+
+    return res.status(201).json({
+      success: true,
+      data: payment,
+      token: result.token,
+      message: "Payment created successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      error: "Server Error",
+    });
+  }
+};
+
+exports.updateBalance = async (req, res) => {
+  const { orderId } = req.body;
+
+  try {
+    const payment = await Topup.findOneAndUpdate(
+      { topupId: orderId },
+      { status: "Success" }
+    );
+
+    if (!payment) {
+      return res.status(404).json({
+        success: false,
+        error: "Payment not found",
+      });
+    }
+
+    const customer = await Customer.findByIdAndUpdate(payment.idCustomer, {
+      $inc: { balance: payment.amount },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Payment status updated to paid successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      error: "Server Error",
     });
   }
 };
