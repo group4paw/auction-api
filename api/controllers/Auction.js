@@ -4,6 +4,7 @@ const Auction = require("../models/Auction.js");
 const Seller = require("../models/Seller.js");
 const Bid = require("../models/Bid.js");
 const { default: mongoose } = require("mongoose");
+const Customer = require("../models/Customer.js");
 
 exports.addAuctionController = async (req, res) => {
   const {
@@ -278,9 +279,16 @@ exports.addBidController = async (req, res) => {
           { new: true }
         );
 
+        const customer = Customer.findByIdAndUpdate(
+          userid,
+          { $inc: { balance: -amount } },
+          { new: true }
+        );
+
         return res.status(200).json({
           success: true,
           data: updatedAuction,
+          customer: customer,
           message: "Bid successful",
         });
       });
