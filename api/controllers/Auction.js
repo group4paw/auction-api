@@ -244,56 +244,31 @@ exports.removeAuctionsController = async (req, res) => {
 exports.addBidController = async (req, res) => {
   const id = req.params.auctionID;
   const { userid, amount } = req.body;
-
-  // find auction and check if its ongoing
-  if (id.length != 24) res.status(404).json({ message: "Auction not found" });
   try {
-    const auction = await Auction.findById(id)
-      .exec()
-      .then(async (doc) => {
-        if (!doc) res.status(404).json({ message: "Auction not found" });
+    const bid = await Bid({
+      bidder: userid,
+      auction: id,
+      amount: amount,
+    });
 
-        // reject if not ongoing
-        if (doc.startDate > new Date())
-          return res.status(403).json({ message: "Auction hasn't started." });
-        if (doc.endDate <= new Date())
-          return res
-            .status(403)
-            .json({ message: "Auction has already ended." });
+    const savedBid = await bid.save();
 
-        // reject if id is owner
-        if (doc.owner == new mongoose.Types.ObjectId(userid))
-          return res.status(403).json({ message: "Invalid bidder." });
+    const updatedAuction = await Auction.findByIdAndUpdate(
+      id,
+      { $push: { bids: savedBid._id } },
+      { new: true }
+    );
 
-        const bid = await Bid({
-          bidder: new mongoose.Types.ObjectId(userid),
-          auction: doc._id,
-          amount: amount,
-        });
+    const customer = await Customer.findByIdAndUpdate(userid, {
+      $inc: { balance: -amount },
+    });
 
-        const savedBid = await bid.save();
-
-        const updatedAuction = await Auction.findByIdAndUpdate(
-          id,
-          { $push: { bids: savedBid._id } },
-          { new: true }
-        );
-
-        const customer = Customer.findByIdAndUpdate(
-          userid,
-          { $inc: { balance: -amount } },
-          { new: true }
-        );
-
-        return res.status(200).json({
-          success: true,
-          data: updatedAuction,
-          customer: customer,
-          message: "Bid successful",
-        });
-      });
-
-    return;
+    return res.status(200).json({
+      success: true,
+      data: updatedAuction,
+      customer: customer,
+      message: "Bid successful",
+    });
   } catch (err) {
     console.log(err);
     return res.status(404).json({ message: "Auction not found" });
