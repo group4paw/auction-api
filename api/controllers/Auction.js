@@ -68,7 +68,16 @@ exports.addAuctionController = async (req, res) => {
 
 exports.getAllAuctionsController = async (req, res) => {
   // additional data helper function
-  const getAuctions = await Auction.find({}).populate("idPainting").exec();
+  const { userid } = req.params;
+  let getAuctions;
+  if (!userid) {
+    getAuctions = await Auction.find().populate("idPainting").exec();
+  } else {
+    getAuctions = await Auction.find({ owner: userid })
+      .populate("idPainting")
+      .exec();
+  }
+
   // loop auction
   for (let i = 0; i < getAuctions.length; i++) {
     const auction = getAuctions[i].toJSON();
