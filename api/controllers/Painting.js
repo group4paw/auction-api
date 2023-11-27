@@ -44,7 +44,9 @@ exports.createPainting = async (req, res) => {
 exports.getPaintingById = async (req, res) => {
   const paintingId = req.params.id;
   try {
-    const painting = await Painting.findById(paintingId);
+    const painting = await Painting.findById(paintingId)
+      .populate("sellerId")
+      .exec();
     if (!painting) {
       return res.status(404).json({ message: "painting not found" });
     }
@@ -71,6 +73,25 @@ exports.updatePaintingDescById = async (req, res) => {
     res.status(200).json({
       message: "Painting description updated successfully",
       newDesc: painting.paintingDesc,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+exports.getPaintingsByUserId = async (req, res) => {
+  const userId = req.params.userId;
+  try {
+    const paintings = await Painting.find({ sellerId: userId });
+    if (!paintings) {
+      return res
+        .status(404)
+        .json({ message: "Paintings not found", paintings });
+    }
+    res.status(200).json({
+      paintings,
+      message: "Paintings data retrieved succesfully",
     });
   } catch (error) {
     console.error(error);
