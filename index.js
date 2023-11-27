@@ -49,5 +49,5 @@ app.use("/painting", PaintingRouter);
 app.use("/bid", BidRouter);
 
 app.get("/images/:imageName", (req, res) => {
-  res.sendFile(__dirname + "/public/images/" + req.params.imageName);
+  res.sendFile(__dirname + "/public/uploads/" + req.params.imageName);
 });
