@@ -3,9 +3,12 @@ const app = express();
 const bodyParser = require("body-parser");
 const connectDB = require("./api/config/db");
 const dotenv = require("dotenv");
+const multer = require("multer");
 
 const cors = require("cors");
 app.use(cors());
+app.use(express.json());
+app.use(express.static("public"));
 
 dotenv.config({ path: "./.env" });
 
@@ -33,6 +36,7 @@ const PaymentRouter = require("./api/routes/Payment.js");
 const WishlistRouter = require("./api/routes/Wishlist.js");
 const PaintingRouter = require("./api/routes/Painting.js");
 const BidRouter = require("./api/routes/Bid.js");
+const uploadMiddleware = require("./api/middleware/multer.js");
 
 app.use("/wishlist", WishlistRouter);
 app.use("/customer", CustomerRouter);

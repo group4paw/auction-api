@@ -11,8 +11,8 @@ exports.createPainting = async (req, res) => {
     cityFrom,
     weight,
     sellerId,
-    image,
   } = req.body;
+  const image = req.file.filename;
   try {
     const painting = await Painting.create({
       title,
@@ -34,7 +34,6 @@ exports.createPainting = async (req, res) => {
       message: "Painting data created succesfully",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       error: "Failed to add painting data",
