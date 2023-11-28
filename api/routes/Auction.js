@@ -16,7 +16,7 @@ router.post("/", addAuctionController);
 router.get("/:userid?", getAllAuctionsController);
 router.get("/:auctionID", getAuctionsByIdController);
 // router.get("/:auctionID?", getAuctionsController);
-router.delete("/:auctionID/delete", removeAuctionsController);
+router.delete("/:auctionID", removeAuctionsController);
 router.put("/:auctionID/bid", addBidController);
 router.post("/bid/:auctionID", setBidController);
 
