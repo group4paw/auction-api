@@ -13,7 +13,7 @@ const {
 
 // Register User
 router.post("/", addAuctionController);
-router.get("/:userid?", getAllAuctionsController);
+router.get("/user/:userid?", getAllAuctionsController);
 router.get("/:auctionID", getAuctionsByIdController);
 // router.get("/:auctionID?", getAuctionsController);
 router.delete("/:auctionID", removeAuctionsController);
