@@ -45,6 +45,11 @@ const paintingSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    estimatedDelivery: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     sellerId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,

@@ -11,6 +11,7 @@ exports.createPainting = async (req, res) => {
     cityFrom,
     weight,
     sellerId,
+    estimatedDelivery,
   } = req.body;
   const image = req.file.filename;
   try {
@@ -25,6 +26,7 @@ exports.createPainting = async (req, res) => {
       weight,
       sellerId,
       image,
+      estimatedDelivery,
     });
 
     painting.sellerId = undefined;
@@ -92,6 +94,63 @@ exports.getPaintingsByUserId = async (req, res) => {
     res.status(200).json({
       paintings,
       message: "Paintings data retrieved succesfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+exports.updatePainting = async (req, res) => {
+  const paintingId = req.params.id;
+  const {
+    title,
+    description,
+    medium,
+    width,
+    height,
+    frame,
+    cityFrom,
+    weight,
+    estimatedDelivery,
+  } = req.body;
+  const image = req.file.filename;
+  try {
+    const painting = await Painting.findById(paintingId);
+    if (!painting) {
+      return res.status(404).json({ message: "Painting not found" });
+    }
+    painting.title = title;
+    painting.description = description;
+    painting.medium = medium;
+    painting.width = width;
+    painting.height = height;
+    painting.frame = frame;
+    painting.cityFrom = cityFrom;
+    painting.weight = weight;
+    painting.image = image;
+    painting.estimatedDelivery = estimatedDelivery;
+    await painting.save();
+    res.status(200).json({
+      message: "Painting data updated successfully",
+      painting,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+exports.deletePainting = async (req, res) => {
+  const paintingId = req.params.id;
+  try {
+    const painting = await Painting.findById(paintingId);
+    if (!painting) {
+      return res.status(404).json({ message: "Painting not found" });
+    }
+    await painting.remove();
+    res.status(200).json({
+      message: "Painting deleted successfully",
     });
   } catch (error) {
     console.error(error);
