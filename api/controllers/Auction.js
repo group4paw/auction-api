@@ -241,13 +241,17 @@ exports.removeAuctionsController = async (req, res) => {
   }
 
   // delete the auction
-  const deletedAuction = await Auction.findByIdAndRemove(id);
+  try {
+    await Auction.findByIdAndDelete(id);
 
-  return res.status(200).json({
-    success: true,
-    data: deletedAuction,
-    message: "Auction deleted successfully",
-  });
+    return res.status(200).json({
+      success: true,
+      message: "Auction deleted successfully",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(404).json({ message: "Auction not found" });
+  }
 };
 
 exports.addBidController = async (req, res) => {
