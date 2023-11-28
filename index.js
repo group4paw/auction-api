@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const connectDB = require("./api/config/db");
 const dotenv = require("dotenv");
 const multer = require("multer");
+const axios = require("axios");
 
 const cors = require("cors");
 app.use(cors());
@@ -50,4 +51,17 @@ app.use("/bid", BidRouter);
 
 app.get("/images/:imageName", (req, res) => {
   res.sendFile(__dirname + "/public/uploads/" + req.params.imageName);
+});
+
+app.get("/ongkir", (req, res) => {
+  const axios = require("axios");
+  axios
+    .get("https://api.rajaongkir.com/starter/city?id=39", {
+      headers: {
+        key: process.env.RAJAONGKIR_API_KEY,
+      },
+    })
+    .then(function (response) {
+      res.send(response.data);
+    });
 });
