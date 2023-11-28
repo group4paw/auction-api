@@ -56,7 +56,7 @@ app.get("/images/:imageName", (req, res) => {
 app.get("/ongkir", (req, res) => {
   const axios = require("axios");
   axios
-    .get("https://api.rajaongkir.com/starter/city?id=39", {
+    .get("https://api.rajaongkir.com/starter/city", {
       headers: {
         key: process.env.RAJAONGKIR_API_KEY,
       },
