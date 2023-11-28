@@ -13,6 +13,7 @@ exports.createPainting = async (req, res) => {
     sellerId,
     estimatedDelivery,
   } = req.body;
+  console.log(req.file);
   const image = req.file.filename;
   try {
     const painting = await Painting.create({
