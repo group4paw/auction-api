@@ -5,22 +5,13 @@ const {
   deletePainting,
 } = require("../controllers/Painting");
 const { getPaintingById } = require("../controllers/Painting");
-const {
-  updatePaintingDescById,
-  updatePainting,
-} = require("../controllers/Painting");
-const uploadMiddleware = require("../middleware/multer");
+const { updatePaintingDescById } = require("../controllers/Painting");
 const router = express.Router();
 
-router.post(
-  "/create",
-  uploadMiddleware.single("paintingsImage"),
-  createPainting
-);
+router.post("/create", createPainting);
 router.put("/:id/update-desc", updatePaintingDescById);
 router.get("/:id", getPaintingById);
 router.get("/user/:userId", getPaintingsByUserId);
-router.put("/:id/", uploadMiddleware.single("paintingsImage"), updatePainting);
 router.delete("/:id", deletePainting);
 
 module.exports = router;
