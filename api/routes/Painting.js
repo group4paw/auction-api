@@ -12,11 +12,7 @@ const {
 const uploadMiddleware = require("../middleware/multer");
 const router = express.Router();
 
-router.post(
-  "/create",
-  uploadMiddleware.single("paintingsImage"),
-  createPainting
-);
+router.post("/create", createPainting);
 router.put("/:id/update-desc", updatePaintingDescById);
 router.get("/:id", getPaintingById);
 router.get("/user/:userId", getPaintingsByUserId);

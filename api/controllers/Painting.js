@@ -12,8 +12,8 @@ exports.createPainting = async (req, res) => {
     weight,
     sellerId,
     estimatedDelivery,
+    image,
   } = req.body;
-  const image = req.file.filename;
   try {
     const painting = await Painting.create({
       title,
