@@ -67,3 +67,25 @@ app.get("/ongkir", (req, res) => {
       res.send(response.data);
     });
 });
+
+app.post("/ongkir", (req, res) => {
+  const axios = require("axios");
+  axios
+    .post(
+      "https://api.rajaongkir.com/starter/cost",
+      {
+        origin: req.body.origin,
+        destination: req.body.destination,
+        weight: req.body.weight,
+        courier: "jne",
+      },
+      {
+        headers: {
+          key: process.env.RAJAONGKIR_API_KEY,
+        },
+      }
+    )
+    .then(function (response) {
+      res.send(response.data);
+    });
+});

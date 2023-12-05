@@ -2,22 +2,52 @@ const Order = require("../models/Order");
 const Customer = require("../models/Customer");
 const Seller = require("../models/Seller");
 const Auction = require("../models/Auction");
+const Painting = require("../models/Painting");
 
 exports.createOrder = async (req, res) => {
   try {
-    const { idAuction, idSeller, idCustomer, highestBid } = req.body;
-    const order = await Order.create({
+    const {
       idAuction,
       idSeller,
       idCustomer,
       highestBid,
-    });
-    await order.save();
-    res.status(200).json({
-      success: true,
-      order,
-    });
+      title,
+      image,
+      expiredDate,
+      idPainting,
+    } = req.body;
+
+    const auction = await Order.findOne({ idAuction: idAuction });
+    if (auction) {
+      res.status(500).json({
+        success: false,
+        error: "Order already exist",
+      });
+    } else {
+      const sellerName = await Seller.findById(idSeller);
+      const customerName = await Customer.findById(idCustomer);
+      const painting = await Painting.findById(idPainting);
+      const order = await Order.create({
+        idAuction,
+        idSeller,
+        idCustomer,
+        highestBid,
+        title,
+        image,
+        expiredDate,
+        idPainting,
+        seller: sellerName.username,
+        customer: customerName.username,
+        addressFrom: painting.cityFrom,
+      });
+
+      res.status(200).json({
+        success: true,
+        order,
+      });
+    }
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       success: false,
       error: error.message,
@@ -71,7 +101,7 @@ exports.getOrderByBuyerId = async (req, res) => {
 };
 
 exports.checkoutOrder = async (req, res) => {
-  const { idCustomer, shipTo } = req.body;
+  const { idCustomer, shipTo, phone, price } = req.body;
   try {
     const order = await Order.findById(req.params.id);
     if (order.idCustomer != idCustomer) {
@@ -81,19 +111,31 @@ exports.checkoutOrder = async (req, res) => {
       });
     }
     const seller = await Seller.findById(order.idSeller);
+    const customer = await Customer.findById(idCustomer);
+    if (customer.balance < price) {
+      res.status(500).json({
+        success: false,
+        error: "Your balance is not enough",
+      });
+    }
+    // reduce money from customer
+    customer.balance -= price;
+    await customer.save();
 
     // add money to seller
-    seller.balance += order.highestBid;
+    seller.balance += price + order.highestBid;
     await seller.save();
 
-    order.shipTo = shipTo;
+    order.addressTo = shipTo;
     order.status = "Paid";
+    order.phoneNumber = phone;
+    order.totalPrice = price;
     await order.save();
 
+    const buyer = await Customer.findById(idCustomer);
     res.status(200).json({
       success: true,
-      order,
-      seller,
+      buyer,
     });
   } catch (error) {
     res.status(500).json({

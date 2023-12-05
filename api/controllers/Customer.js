@@ -105,11 +105,14 @@ exports.getInformationUser = async (req, res) => {
     // get count bid from customer
     const countBid = await Bid.find({ bidder: id }).count();
 
+    const countOrder = await Order.find({ idCustomer: id }).count();
+
     res.status(200).json({
       success: true,
       data: {
         countWishlist,
         countBid,
+        countOrder,
       },
       message: "Information user retrieved successfully",
     });

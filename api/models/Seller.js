@@ -30,6 +30,8 @@ const sellerSchema = new mongoose.Schema(
     image: {
       type: String,
       required: false,
+      default:
+        "https://cdn.vectorstock.com/i/preview-1x/77/30/default-avatar-profile-icon-grey-photo-placeholder-vector-17317730.jpg",
     },
     address: {
       type: String,
