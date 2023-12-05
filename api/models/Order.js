@@ -8,8 +8,22 @@ const Order = new mongoose.Schema(
       trim: true,
       ref: "Auction",
     },
+    idPainting: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      trim: true,
+      ref: "Painting",
+    },
     highestBid: {
       type: Number,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    image: {
+      type: String,
       required: true,
     },
     idSeller: {
@@ -18,19 +32,49 @@ const Order = new mongoose.Schema(
       trim: true,
       ref: "Seller",
     },
+    seller: {
+      type: String,
+      required: true,
+    },
     idCustomer: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       trim: true,
       ref: "Customer",
     },
-    shipTo: {
+    customer: {
       type: String,
+      required: true,
+    },
+    addressFrom: {
+      type: String,
+      required: true,
+    },
+    addressTo: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    phoneNumber: {
+      type: String,
+    },
+    totalPrice: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    idInsurance: {
+      type: mongoose.Schema.Types.ObjectId,
+      trim: true,
+      ref: "Insurance",
+    },
+    expiredDate: {
+      type: Date,
+      required: true,
     },
     status: {
       type: String,
-      required: true,
-      enum: ["Need Confirmation", "Paid", "Shipped", "Done"],
+      enum: ["Need Confirmation", "Paid", "Not paid", "Shipped", "Done"],
       default: "Need Confirmation",
     },
   },

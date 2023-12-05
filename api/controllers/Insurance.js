@@ -1,12 +1,11 @@
 const Insurance = require("../models/Insurance");
 
 exports.createInsurance = async (req, res) => {
-  const { idInsurance, insuranceName, insurancePrice } = req.body;
+  const { name, price } = req.body;
   try {
     const insurance = await Insurance.create({
-      idInsurance,
-      insuranceName,
-      insurancePrice,
+      name,
+      price,
     });
     return res.status(201).json({
       success: true,
@@ -19,6 +18,17 @@ exports.createInsurance = async (req, res) => {
       success: false,
       error: "Server Error",
     });
+  }
+};
+
+exports.getAllInsurance = async (req, res) => {
+  try {
+    const insurance = await Insurance.find();
+
+    res.status(200).json({ insurance });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 

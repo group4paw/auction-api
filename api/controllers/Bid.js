@@ -15,6 +15,7 @@ exports.getBidbyAuctionId = async (req, res) => {
       temp.name = bidder.name;
       temp.username = bidder.username;
       temp.image = bidder.image;
+      temp._id = bidder._id;
       bid.bidder = temp;
       data.push(bid);
     }
