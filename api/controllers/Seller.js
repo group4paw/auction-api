@@ -7,6 +7,20 @@ exports.sellerSignUp = async (req, res) => {
     req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
+    const checkEmail = await Seller.findOne({ email });
+    if (checkEmail) {
+      return res.status(400).json({
+        success: false,
+        error: "Email already exists",
+      });
+    }
+    const checkUsername = await Seller.findOne({ username });
+    if (checkUsername) {
+      return res.status(400).json({
+        success: false,
+        error: "Username already exists",
+      });
+    }
     const seller = await Seller.create({
       name,
       username,

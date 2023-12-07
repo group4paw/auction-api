@@ -9,6 +9,20 @@ exports.customerSignUp = async (req, res) => {
     req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
+    const checkEmail = await Customer.findOne({ email });
+    if (checkEmail) {
+      return res.status(400).json({
+        success: false,
+        error: "Email already exists",
+      });
+    }
+    const checkUsername = await Customer.findOne({ username });
+    if (checkUsername) {
+      return res.status(400).json({
+        success: false,
+        error: "Username already exists",
+      });
+    }
     const customer = await Customer.create({
       name,
       username,
