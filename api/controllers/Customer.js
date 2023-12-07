@@ -2,6 +2,7 @@ const Customer = require("../models/Customer");
 const bcrypt = require("bcrypt");
 const Wishlist = require("../models/Wishlist");
 const Bid = require("../models/Bid.js");
+const Order = require("../models/Order.js");
 
 exports.customerSignUp = async (req, res) => {
   const { name, username, email, password, phoneNumber, address, image } =
