@@ -272,9 +272,9 @@ exports.addBidController = async (req, res) => {
       { new: true }
     );
 
-    const customer = await Customer.findByIdAndUpdate(userid, {
-      $inc: { balance: -amount },
-    });
+    const customer = await Customer.findById(userid);
+    customer.balance -= amount;
+    await customer.save();
 
     return res.status(200).json({
       success: true,

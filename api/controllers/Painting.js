@@ -114,7 +114,6 @@ exports.updatePainting = async (req, res) => {
     weight,
     estimatedDelivery,
   } = req.body;
-  const image = req.file?.filename;
   try {
     const painting = await Painting.findById(paintingId);
     if (!painting) {
@@ -128,9 +127,6 @@ exports.updatePainting = async (req, res) => {
     painting.frame = frame;
     painting.cityFrom = cityFrom;
     painting.weight = weight;
-    if (image) {
-      painting.image = image;
-    }
     painting.estimatedDelivery = estimatedDelivery;
     await painting.save();
     res.status(200).json({
