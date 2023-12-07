@@ -276,7 +276,7 @@ exports.topUpBalance = async (req, res) => {
 exports.updateBalance = async (req, res) => {
   const { orderId } = req.body;
 
-  const order = await Topup.findOne({ topupId: orderId });
+  const order = await Topup.findOne({ topupId: orderId, status: "Success" });
 
   if (order) {
     return res.status(500).json({
