@@ -298,9 +298,9 @@ exports.updateBalance = async (req, res) => {
       });
     }
 
-    const customer = await Customer.findByIdAndUpdate(payment.idCustomer, {
-      $inc: { balance: payment.amount },
-    });
+    const customer = await Customer.findById(payment.idCustomer);
+    customer.balance += payment.amount;
+    await customer.save();
 
     return res.status(200).json({
       success: true,
