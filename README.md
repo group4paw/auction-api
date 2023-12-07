@@ -1,113 +1,56 @@
-## Auction API
+<h1 align="center" >
+    Easybid
+</h1>
 
-An auction is the way seller and buyers interact. Sellers will start an auction for a painting they made and buyers can bid to buy the painting they wish to have. Auctions are held in a limited amount of time.
+## About this project
+Easybid is an online auction application that provides an easy and enjoyable experience for participating in painting auctions.
 
-### Endpoints
+## Why Easybid? 
+- Based on **e-commerce** so users will be more familiar with using it
+- **Live bidding**, displays the auction process live
 
-```
-POST /auction/add
-GET /auction
-GET /auction/:id
-DELETE /auction/:id/delete
-```
+## Members
+- **Aly Murry Darmoko** - 21/473092/TK/52125
+- **Hiera Ahmaddhio Rhesadewa** - 21/473997/TK/52268
+- **Muhammad Luthfan Arrayyan** - 21/479825/TK/52943
+- **Farhan Franaka** - 21/482306/TK/53250
 
-### Auction Object
+## All Links
+- **Deployed Website:** https://auction-fe-gilt.vercel.app/
+- **Backend Deployed:** https://auction-api-4.vercel.app/
+- **Backend Repository:** https://github.com/group4paw/auction-api
+- **Slide:** https://s.id/Easybid_PPT
+- **Video Presentasi:** 
+- **Figma File:** https://s.id/Easybid_Figma
 
-```json
-{
-	"_id": "650ab75d1efe5c8445082b2d",
-	"owner": "6505751888946e0d312bcdf0",
-	"startingPrice": 210,
-	"reservePrice": 250,
-	"startDate": "2023-09-09T17:00:00.000Z",
-	"endDate": "2023-09-11T17:00:00.000Z",
-	"idPainting": 0,
-	"bidders": [],
-	"__v": 0,
-	"status": "over"
-}
-```
+## Tech Stack
+- **NodeJs:** Server-side
+- **ExpressJS:** Backend Framework
+- **MongoDB:** Database
+- **NextJs:** Frontend Framework
+- **TailwindCSS:** CSS Framework
+- **Axios:** HTTP Request
+- **Redux:** State Management
+- **Vercel:** Deployment & Blob Storage
+- **Figma:** UI/UX Design
+- **Postman:** API Client
+- **Midtrans:** Payment Gateway
 
-| Key             | Type     | Description                              |
-| :-------------- | :------- | :--------------------------------------- |
-| `_id`           | ObjectID | The auction id. Provided by MongoDB      |
-| `startingPrice` | Number   | The painting's starting price.           |
-| `reservePrice`  | Number   | The minimum amount of bid a buy can bid. |
-| `startDate`     | Date     | The auction's starting date.             |
-| `endDate`       | Date     | The auction's ending date.               |
-| `idPainting`    | Number   | The painting's id.                       |
-| `bidders`       | Array    | List of bids.                            |
-| `status`        | String   | The auction's status                     |
-
-### Create an auction
-
-```shell
-curl -X POST http://localhost:3000/auction/add \
-  -H "Content-Type: application/json" \
-  -d '{
-    "startingPrice": 1000,
-    "reservePrice": 800,
-    "startDate": "2023-09-20T12:00:00Z",
-    "endDate": "2023-09-25T18:00:00Z",
-    "idPainting": "15"
-  }'
-```
-
-| Parameter       | Type     | Description                                              |
-| :-------------- | :------- | :------------------------------------------------------- |
-| `startingPrice` | `number` | **Required**. The painting's original price              |
-| `reservePrice`  | `number` | **Required**. The least permitted bid                    |
-| `startDate`     | `string` | **Required**. The auction starting DateTime, stringified |
-| `endDate`       | `string` | **Required**. The auction ending DateTime, stringified   |
-| `idPainting`    | `string` | **Required**. The object id of the painting.             |
-
-### Get auctions
-
-```shell
-curl -X GET http://localhost:3000/auction?status=ongoing
-```
-
-```shell
-curl -X GET http://localhost:3000/auction/650aa99f546bacd802eb8bbb
-```
-
-| Parameter | Type     | Description                                                          |
-| :-------- | :------- | :------------------------------------------------------------------- |
-| `id`      | `string` | The auction id. Inserting id will ignore all other filters           |
-| `status`  | `string` | Filter auction status. Values are `scheduled`, `ongoing`, and `over` |
-
-### Bid on auction
-
-```shell
-curl -X PUT http://localhost:3000/auction/650aa99f546bacd802eb8bbb/bid \
-  -H "Content-Type: application/json" \
-  -d '{
-    "userid": "6505751888946e0d312bcdf0",
-    "amount": 1000
-  }'
-```
-
-| Parameter | Type     | Description          |
-| :-------- | :------- | :------------------- |
-| `userid`  | `string` | The id of the bidder |
-| `amount`  | `number` | Amount of bid.       |
-
-### Delete auction
-
-```shell
-curl -X DELETE "http://localhost:3000/auction/650aa99f546bacd802eb8bbb/delete" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "userid": "6505751888946e0d312bcdf0",
-  }'
-
-```
-
-| Parameter | Type     | Description                         |
-| :-------- | :------- | :---------------------------------- |
-| `userid`  | `string` | **Required**. User id of the owner. |
-
-## Things changed
-
-- Auction id is not used as mongo already assign an id (might add later when actually needed)
-- Auction status is not used as it is redundant and error prone
+## How to Run?
+1. Clone this repository
+    ```````````
+    git clone https://github.com/group4paw/auction-api.git
+    ```````````
+2. Install NPM Packages
+    ```````````
+    npm install
+    ```````````
+3. Run App
+    ```````````
+    npm run dev
+    ```````````
+4. Open in your localhost
+    ```````````
+    http://localhost:3000/
+    ```````````
+5. Refer to [Wiki](https://github.com/group4paw/auction-api/wiki) for API usage and documentation
