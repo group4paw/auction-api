@@ -276,6 +276,15 @@ exports.topUpBalance = async (req, res) => {
 exports.updateBalance = async (req, res) => {
   const { orderId } = req.body;
 
+  const order = await Topup.findOne({ topupId: orderId });
+
+  if (order) {
+    return res.status(500).json({
+      success: false,
+      error: "Order already exist",
+    });
+  }
+
   try {
     const payment = await Topup.findOneAndUpdate(
       { topupId: orderId },
